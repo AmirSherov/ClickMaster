@@ -83,7 +83,7 @@ export default function Login() {
         </button>
       </form>
       <p className="auth-text">
-        Don't have an account? <a href="/registration" className="auth-link">Register</a>
+        Don't have an account? <a href="/Registration" className="auth-link">Register</a>
       </p>
       {loading && <Loading />}
     </div>
