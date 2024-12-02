@@ -1,0 +1,27 @@
+
+.bottom-navigation {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #181818; 
+    padding: 15px 0;
+    border-top: 2px solid #333;
+
+    .nav-item {
+        color: #ffffff;
+        font-size: 1rem;
+        text-transform: uppercase;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.3s ease, transform 0.3s ease;
+
+        &:hover {
+            color: #00bfff;
+            transform: scale(1.1); 
+        }
+    }
+}
