@@ -7,14 +7,14 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const userAgent = navigator.userAgent.toLowerCase();
-    const mobile = /iphone|ipod|android|webos|blackberry|iemobile|opera mini/i.test(userAgent);
-    setIsMobile(mobile); 
-    if (!mobile) {
-      router.push('/404');
-    }
-  }, [router]);
+  // useEffect(() => {
+  //   const userAgent = navigator.userAgent.toLowerCase();
+  //   const mobile = /iphone|ipod|android|webos|blackberry|iemobile|opera mini/i.test(userAgent);
+  //   setIsMobile(mobile); 
+  //   if (!mobile) {
+  //     router.push('/404');
+  //   }
+  // }, [router]);
 
   const [counter, setCounter] = useState(0);
 

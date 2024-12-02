@@ -7,16 +7,16 @@ export default function NotFound() {
     const [isMobile, setIsMobile] = useState(false);
     const router = useRouter();
 
-    useEffect(() => {
-        const userAgent = navigator.userAgent.toLowerCase();
-        const isMobileDevice = /iphone|ipod|android|webos|blackberry|iemobile|opera mini/i.test(userAgent);
-        if (isMobileDevice) {
-            router.push('/');
-        } else {
-            setIsMobile(false); 
-        }
-    }, []); 
-    if (isMobile) return null;
+    // useEffect(() => {
+    //     const userAgent = navigator.userAgent.toLowerCase();
+    //     const isMobileDevice = /iphone|ipod|android|webos|blackberry|iemobile|opera mini/i.test(userAgent);
+    //     if (isMobileDevice) {
+    //         router.push('/');
+    //     } else {
+    //         setIsMobile(false); 
+    //     }
+    // }, []); 
+    // if (isMobile) return null;
 
     return (
         <div className="container404">
