@@ -1,5 +1,4 @@
 
-// Импорт необходимых функций
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
@@ -9,13 +8,11 @@ import {
   updateDoc,
   deleteDoc,
   getDocs,
-  getDoc,
   query,
   where,
 } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics"; // Опционально для Analytics
+import { getAnalytics } from "firebase/analytics"; 
 
-// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCzZO-Qae4DiGb9T6DuzbgwitbnPZ8v6h0",
   authDomain: "click-master-58baa.firebaseapp.com",
@@ -26,39 +23,23 @@ const firebaseConfig = {
   measurementId: "G-2GFZ562Y47",
 };
 
-// Инициализация Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
-// Опциональная инициализация Analytics
 let analytics;
+
 if (typeof window !== "undefined") {
   analytics = getAnalytics(app);
 }
 
-// Коллекция пользователей
 const usersCollection = collection(db, "users");
 
-// Функция для добавления нового пользователя
 export async function addUser(email, username, password, id) {
-  // Конвертация password и id в числа
-  const parsedPassword = parseInt(password, 10);
-  const parsedId = parseInt(id, 10);
-
-  if (isNaN(parsedPassword)) {
-    throw new Error("Пароль должен быть числом");
-  }
-
-  if (isNaN(parsedId)) {
-    throw new Error("ID должен быть числом");
-  }
-
   const newUser = {
     email,
     username,
-    password: parsedPassword,
-    id: parsedId,
-    count: 0, // Счётчик или другой параметр
+    password,  
+    id: parseInt(id, 10),  
+    count: 0, 
   };
 
   try {
@@ -69,8 +50,6 @@ export async function addUser(email, username, password, id) {
   }
 }
 
-
-// Функция для увеличения счётчика пользователя
 export async function incrementCount(id, count) {
   try {
     const userQuery = query(usersCollection, where("id", "==", id));
@@ -84,9 +63,7 @@ export async function incrementCount(id, count) {
         count: currentCount + count,
       });
 
-      console.log(
-        `Счётчик для пользователя ${id} обновлён: ${currentCount + count}`
-      );
+      console.log(`Счётчик для пользователя ${id} обновлён: ${currentCount + count}`);
     } else {
       console.error("Пользователь не найден!");
     }
@@ -94,26 +71,26 @@ export async function incrementCount(id, count) {
     console.error("Ошибка при обновлении счётчика:", error);
   }
 }
-export async function getUserByUsernameAndPassword(username, password) {
+
+export async function getUserByUsernameAndPassword(email, password) {
   try {
-    const usersCollection = collection(db, "users");
     const q = query(
       usersCollection,
-      where("username", "==", username),
-      where("password", "==", parseInt(password))
+      where("email", "==", email),
+      where("password", "==", password) 
     );
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
-      return querySnapshot.docs[0].data(); // Возвращаем данные первого найденного пользователя
+      return querySnapshot.docs[0].data();
     }
-    return null; // Если пользователь не найден
+    return null; 
   } catch (error) {
     console.error("Error fetching user:", error);
     throw error;
   }
 }
-// Функция для получения всех пользователей
+
 export async function getAllUsers() {
   try {
     const querySnapshot = await getDocs(usersCollection);
@@ -126,7 +103,6 @@ export async function getAllUsers() {
   }
 }
 
-// Функция для удаления пользователя
 export async function deleteUser(id) {
   try {
     const userQuery = query(usersCollection, where("id", "==", id));
@@ -144,20 +120,17 @@ export async function deleteUser(id) {
   }
 }
 
-// Функция для проверки существования пользователя по email
 export async function userExistsByEmail(email) {
   try {
     const userQuery = query(usersCollection, where("email", "==", email));
     const querySnapshot = await getDocs(userQuery);
-
-    return !querySnapshot.empty; // true, если пользователь с таким email существует
+    return !querySnapshot.empty;
   } catch (error) {
     console.error("Ошибка при проверке email пользователя:", error);
     return false;
   }
 }
 
-// Функция для регистрации пользователя
 export async function registerUser(email, username, password, id) {
   try {
     const exists = await userExistsByEmail(email);
@@ -174,5 +147,4 @@ export async function registerUser(email, username, password, id) {
   }
 }
 
-// Экспорт базы данных и Analytics (если нужно)
 export { db, analytics };

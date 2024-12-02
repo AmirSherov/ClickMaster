@@ -6,7 +6,7 @@ import { getUserByUsernameAndPassword } from '../api';
 import { toast, Toaster } from 'react-hot-toast';
 
 export default function Login() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
 
@@ -14,11 +14,13 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const user = await getUserByUsernameAndPassword(username, parseInt(password));
+      const user = await getUserByUsernameAndPassword(email, password);
 
       if (user) {
         toast.success('Login successful');
-        router.push('/dashboard');
+        setTimeout(() => {
+          router.push('/');
+        }, 3000)
       } else {
         toast.error('Invalid username or password');
       }
@@ -47,9 +49,9 @@ export default function Login() {
       <form onSubmit={handleLogin} className="auth-form">
         <input
           type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="auth-input"
           required
         />
@@ -64,7 +66,7 @@ export default function Login() {
         <button type="submit" className="auth-button">Login</button>
       </form>
       <p className="auth-text">
-        Don't have an account? <a href="/Registration" className="auth-link">Register</a>
+        Don't have an account? <a href="/registration" className="auth-link">Register</a>
       </p>
     </div>
   );
