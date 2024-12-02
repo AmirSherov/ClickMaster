@@ -4,7 +4,8 @@ import { useRouter } from 'next/navigation';
 import './login.scss';
 import { getUserByUsernameAndPassword } from '../api';
 import { toast, Toaster } from 'react-hot-toast';
-import Loading from "../loading"
+import Loading from "../loading";
+
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,27 +13,32 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
-    setLoading(true);
     e.preventDefault();
+    setLoading(true);
 
     try {
       const user = await getUserByUsernameAndPassword(email, password);
 
       if (user) {
-        setTimeout(() => {
-          setLoading(false);
-        }, 2000);
         toast.success('Login successful');
+        localStorage.setItem('userToken', user.id);
         setTimeout(() => {
           router.push('/');
-        }, 3000)
+        }, 2000); 
       } else {
         toast.error('Invalid username or password');
       }
     } catch (error) {
       console.error('Login error:', error);
       toast.error('An error occurred during login');
+    } finally {
+      setLoading(false); 
     }
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   return (
@@ -68,7 +74,13 @@ export default function Login() {
           className="auth-input"
           required
         />
-        <button type="submit" className="auth-button">Login</button>
+        <button
+          type="submit"
+          className="auth-button"
+          disabled={!email || !password || !validateEmail(email)} 
+        >
+          {loading ? 'Logging in...' : 'Login'}
+        </button>
       </form>
       <p className="auth-text">
         Don't have an account? <a href="/registration" className="auth-link">Register</a>
