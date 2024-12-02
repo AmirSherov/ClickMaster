@@ -34,7 +34,7 @@ export default function Register() {
           toast.success('Registration successful');
         }, 4000);
         setTimeout(() => {
-          router.push('/login');
+          router.push('/Login');
         }, 6500)
       } else {
         toast.error('Email is already taken');
@@ -96,7 +96,7 @@ export default function Register() {
         />
         <button type="submit" className="auth-button">Register</button>
       </form>
-      <p className="auth-text">Already have an account? <a href="/login" className="auth-link">Login</a></p>
+      <p className="auth-text">Already have an account? <a href="/Login" className="auth-link">Login</a></p>
       {loading && <Loading />}
     </div>
   );

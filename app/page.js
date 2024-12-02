@@ -12,7 +12,7 @@ export default function Home() {
   useEffect(() => {
     const userToken = localStorage.getItem('userToken');
     if (!userToken) {
-      router.push('/login');
+      router.push('/Login');
     }
   })
   // useEffect(() => {
