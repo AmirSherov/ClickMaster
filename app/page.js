@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
+import "./globals.scss"
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
@@ -7,15 +8,13 @@ export default function Home() {
     const mobile = /iphone|ipod|android|webos|blackberry|iemobile|opera mini/i.test(userAgent);
     setIsMobile(mobile);
   }, []);
-
+  const [counter, setCounter] = useState(0);
   return (
-   <div style={{ backgroundColor: 'black' }}>
-   <h1 style={{ color: 'white' }}>
-    hello world
-   </h1>
-   <h2 style={{ color: 'white' }}>
-   {isMobile ? 'Пользователь зашел с телефона' : 'Пользователь зашел с компьютера'}
-   </h2>
+   <div className='landing-page-container'>
+    <h1>Click Master</h1>
+    <p>Game of clicking</p>
+    <p>{counter}</p>
+    <button onClick={() => setCounter(counter + 1)}>Tap</button>
    </div>
   );
 }
