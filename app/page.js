@@ -9,13 +9,13 @@ export default function Home() {
   }, []);
 
   return (
-   <>
-   <h1>
+   <div style={{ backgroundColor: 'black' }}>
+   <h1 style={{ color: 'white' }}>
     hello world
    </h1>
-   <h2>
+   <h2 style={{ color: 'white' }}>
    {isMobile ? 'Пользователь зашел с телефона' : 'Пользователь зашел с компьютера'}
    </h2>
-   </>
+   </div>
   );
 }
