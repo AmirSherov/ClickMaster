@@ -1,7 +1,9 @@
-'use client'
+'use client';
 import { useState, useEffect } from 'react';
-import "./globals.scss"
+import './globals.scss';
 import { useRouter } from 'next/navigation';
+import Clicker from './clicker';
+import Nav from './nav';
 
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
@@ -10,20 +12,18 @@ export default function Home() {
   useEffect(() => {
     const userAgent = navigator.userAgent.toLowerCase();
     const mobile = /iphone|ipod|android|webos|blackberry|iemobile|opera mini/i.test(userAgent);
-    setIsMobile(mobile); 
+    setIsMobile(mobile);
     if (!mobile) {
       router.push('/404');
     }
   }, [router]);
 
-  const [counter, setCounter] = useState(0);
 
   return (
-    <div className='landing-page-container'>
-      <h1>Click Master</h1>
-      <p>Game of clicking</p>
-      <p>{counter}</p>
-      <button onClick={() => setCounter(counter + 1)}>Tap</button>
+    <div className="landing-page-container">
+      < Clicker/>
+      <Nav/>
     </div>
   );
 }
+
