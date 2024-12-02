@@ -49,6 +49,31 @@ export async function addUser(email, username, password, id) {
     console.error("Ошибка при добавлении пользователя:", error);
   }
 }
+export async function getUserDataByEmailOrId(email = null, id = null) {
+  try {
+    if (!email && !id) {
+      throw new Error("Необходимо указать email или id для поиска пользователя.");
+    }
+    let userQuery;
+    if (email) {
+      userQuery = query(usersCollection, where("email", "==", email));
+    } else if (id) {
+      userQuery = query(usersCollection, where("id", "==", parseInt(id, 10)));
+    }
+
+    const querySnapshot = await getDocs(userQuery);
+    if (!querySnapshot.empty) {
+      const userDoc = querySnapshot.docs[0];
+      return { id: userDoc.id, ...userDoc.data() }; 
+    } else {
+      console.error("Пользователь не найден!");
+      return null;
+    }
+  } catch (error) {
+    console.error("Ошибка при получении данных пользователя:", error);
+    throw error;
+  }
+}
 
 export async function incrementCount(id, count) {
   try {

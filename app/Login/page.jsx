@@ -4,19 +4,24 @@ import { useRouter } from 'next/navigation';
 import './login.scss';
 import { getUserByUsernameAndPassword } from '../api';
 import { toast, Toaster } from 'react-hot-toast';
-
+import Loading from "../loading"
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
+    setLoading(true);
     e.preventDefault();
 
     try {
       const user = await getUserByUsernameAndPassword(email, password);
 
       if (user) {
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
         toast.success('Login successful');
         setTimeout(() => {
           router.push('/');
@@ -68,6 +73,7 @@ export default function Login() {
       <p className="auth-text">
         Don't have an account? <a href="/registration" className="auth-link">Register</a>
       </p>
+      {loading && <Loading />}
     </div>
   );
 }
