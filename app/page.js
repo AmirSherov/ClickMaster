@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import "./globals.scss"
 import { useRouter } from 'next/navigation';
-
+import Loading from "./loading"
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
@@ -19,11 +19,13 @@ export default function Home() {
   const [counter, setCounter] = useState(0);
 
   return (
+    <>
     <div className='landing-page-container'>
       <h1>Click Master</h1>
       <p>Game of clicking</p>
       <p>{counter}</p>
       <button onClick={() => setCounter(counter + 1)}>Tap</button>
     </div>
+    </>
   );
 }
