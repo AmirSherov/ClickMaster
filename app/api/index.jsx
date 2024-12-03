@@ -170,25 +170,27 @@ export async function deleteUser(id) {
   }
 }
 
-export async function userExistsByEmail(email) {
+export async function userExistsByEmailOrUsername(email, username) {
   try {
-    const userQuery = query(usersCollection, where("email", "==", email));
-    const querySnapshot = await getDocs(userQuery);
-    return !querySnapshot.empty;
+    const userQueryByEmail = query(usersCollection, where("email", "==", email));
+    const userQueryByUsername = query(usersCollection, where("username", "==", username));
+    const querySnapshotByEmail = await getDocs(userQueryByEmail);
+    const querySnapshotByUsername = await getDocs(userQueryByUsername);
+    return !querySnapshotByEmail.empty || !querySnapshotByUsername.empty;
   } catch (error) {
-    console.error("Ошибка при проверке email пользователя:", error);
+    console.log("Ошибка при проверке email/username пользователя:", error);
     return false;
   }
 }
 
-export async function registerUser(email, username, password, id , currentDate) {
+export async function registerUser(email, username, password, id, currentDate) {
   try {
-    const exists = await userExistsByEmail(email);
+    const exists = await userExistsByEmailOrUsername(email, username);
     if (exists) {
-      console.error("Пользователь с таким email уже существует!");
+      console.log("Пользователь с таким email или именем пользователя уже существует!");
       return false;
     }
-    await addUser(email, username, password, id , currentDate);
+    await addUser(email, username, password, id, currentDate);
     console.log("Пользователь успешно зарегистрирован!");
     return true;
   } catch (error) {
@@ -196,5 +198,4 @@ export async function registerUser(email, username, password, id , currentDate) 
     return false;
   }
 }
-
 export { db, analytics };

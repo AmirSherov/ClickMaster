@@ -60,7 +60,7 @@ export default function Register() {
           router.push('/Login');
         }, 4000);
       } else {
-        toast.error('Email is already taken');
+        toast.error('Email or Username is already taken');
       }
     } catch (error) {
       console.error('Error during registration:', error);
