@@ -11,23 +11,30 @@ export default function Clicker() {
     const timeoutRef = useRef(null); 
 
     useEffect(() => {
-        if (userToken === null && typeof window !== 'undefined') {
+        if (typeof window !== 'undefined') {
             const storedToken = localStorage.getItem("userToken");
             setUserToken(storedToken);
         }
-        const storedCount = parseInt(localStorage.getItem("userCount"), 10);
-        if (!isNaN(storedCount)) {
-            dispatch({ type: 'UPDATE_COUNT', payload: storedCount });
+    }, []);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const storedCount = parseInt(localStorage.getItem("userCount"), 10);
+            if (!isNaN(storedCount)) {
+                dispatch({ type: 'UPDATE_COUNT', payload: storedCount });
+            }
         }
-    }, [userToken, dispatch]);
+    }, [dispatch]);
 
     const handleTap = (event) => {
         event.preventDefault();
         const newTapCount = tapCount + 1;
         setTapCount(newTapCount);
 
-        const updatedDisplayCount = (state.count || 0) + newTapCount;
-        localStorage.setItem("userCount", updatedDisplayCount);
+        if (typeof window !== 'undefined') {
+            const updatedDisplayCount = (state.count || 0) + newTapCount;
+            localStorage.setItem("userCount", updatedDisplayCount);
+        }
 
         if (timeoutRef.current) {
             clearTimeout(timeoutRef.current);
@@ -39,7 +46,9 @@ export default function Clicker() {
                     .then((updatedCount) => {
                         if (typeof updatedCount === 'number') {
                             dispatch({ type: 'UPDATE_COUNT', payload: updatedCount });
-                            localStorage.setItem("userCount", updatedCount); 
+                            if (typeof window !== 'undefined') {
+                                localStorage.setItem("userCount", updatedCount); 
+                            }
                         }
                     })
                     .catch((err) => console.error('API error:', err))
@@ -55,7 +64,7 @@ export default function Clicker() {
             }
         };
     }, []);
-    const displayCount = localStorage.getItem("userCount") || state.count || 0;
+    const displayCount = typeof window !== 'undefined' ? localStorage.getItem("userCount") || state.count || 0 : 0;
 
     return (
         <div className="clicker-container">
@@ -71,3 +80,4 @@ export default function Clicker() {
         </div>
     );
 }
+
