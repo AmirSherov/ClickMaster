@@ -4,6 +4,7 @@ import './globals.scss';
 import { useRouter } from 'next/navigation';
 import Clicker from './clicker';
 import Nav from './nav';
+import UserInfo from './userinfo';
 
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
@@ -27,8 +28,9 @@ export default function Home() {
 
   return (
     <div className="landing-page-container">
-      < Clicker/>
-      <Nav/>
+      <UserInfo />
+      <Clicker />
+      <Nav />
     </div>
   );
 }
