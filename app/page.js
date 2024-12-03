@@ -13,11 +13,13 @@ export default function Home() {
   const [userData, setUserData] = useState(null);
   const {state , dispatch} = useGlobalContext();
   useEffect(() => {
-    const userToken = localStorage.getItem('userToken');
-    if (!userToken) {
-      router.push('/Login');
-    } else {
-      GetUserData(userToken);
+    if (typeof window !== "undefined" && window.localStorage) {
+      const userToken = localStorage.getItem('userToken');
+      if (!userToken) {
+        router.push('/Login');
+      } else {
+        GetUserData(userToken);
+      }
     }
   },[])
   async function GetUserData(id){
@@ -37,7 +39,6 @@ export default function Home() {
   //     router.push('/404');
   //   }
   // }, [router]);
-
 
   return (
     <div className="landing-page-container">
