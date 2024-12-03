@@ -2,27 +2,51 @@
 import Nav from '../nav';
 import './accaunt.scss';
 import Modal from '../Modal';
-import { useState , useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useGlobalContext } from '../GlobalState';
 import { useRouter } from 'next/navigation';
+
 export default function Account() {
     const [isOpen, setIsOpen] = useState(false);
     const { state, dispatch } = useGlobalContext();
     const router = useRouter();
+
     const maskEmail = (email) => {
         const [localPart, domain] = email.split('@');
-        const maskedLocalPart = localPart.slice(0, 2) + '**'; 
+        const maskedLocalPart = localPart.slice(0, 2) + '**';
         return `${maskedLocalPart}@${domain}`;
     };
+
     useEffect(() => {
-        const userToken = localStorage.getItem('userToken');
-        if (!userToken) {
-          router.push('/Login');
+        if (typeof window !== 'undefined') {
+            const userToken = localStorage.getItem('userToken');
+            if (!userToken) {
+                router.push('/Login');
+                return;
+            }
+            const checkToken = async () => {
+                const response = await fetch('/api/check-token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${userToken}`
+                    }
+                });
+
+                if (!response.ok) {
+                    router.push('/Login');
+                }
+            };
+
+            checkToken();
         }
-      },[])
+    }, []);
+
     function logout() {
-        localStorage.removeItem('userToken');
-        localStorage.removeItem('userCount');
+        if (typeof window !== 'undefined') {
+            localStorage.removeItem('userToken');
+            localStorage.removeItem('userCount');
+        }
         dispatch({ type: 'SET_USER_NAME', payload: '' });
         dispatch({ type: 'SET_USER_COUNT', payload: 0 });
         dispatch({ type: 'SET_USER_DATE', payload: '' });
@@ -30,6 +54,7 @@ export default function Account() {
         setIsOpen(false);
         window.location.href = '/Login';
     }
+
     return (
         <div className="account-container">
             <h1>Account Information</h1>
@@ -37,13 +62,10 @@ export default function Account() {
                 <p><strong>Username:</strong>{state.userName}</p>
                 <p><strong>Registration Date:</strong>{state.date}</p>
                 <p><strong>Email:</strong> <span className="email-mask">{maskEmail(state.email)}</span></p>
-                <button onClick={() => {
-                    setIsOpen(true);
-                }} className='logout'>Logout</button>
+                <button onClick={() => setIsOpen(true)} className='logout'>Logout</button>
             </div>
             <Nav />
-            <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} onConfirm={() => logout() } text="Are you sure you want to log out?" />
+            <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} onConfirm={() => logout()} text="Are you sure you want to log out?" />
         </div>
     );
 }
-
