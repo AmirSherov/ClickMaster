@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import './login.scss';
 import { getUserByUsernameAndPassword } from '../api';
@@ -21,7 +21,9 @@ export default function Login() {
 
       if (user) {
         toast.success('Login successful');
-        localStorage.setItem('userToken', user.id);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('userToken', user.id);
+        }
         setTimeout(() => {
           setLoading(false); 
         }, 2200);

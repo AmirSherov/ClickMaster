@@ -9,7 +9,15 @@ export default function Clicker() {
     const [tapCount, setTapCount] = useState(0);
     const [timeoutId, setTimeoutId] = useState(null); 
     const [totalCount, setTotalCount] = useState(state.count);  
-    const userToken = localStorage.getItem("userToken");  
+    const [userToken, setUserToken] = useState(null);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const storedToken = localStorage.getItem("userToken");  
+            setUserToken(storedToken);  
+        }
+    }, []); 
+
     const updateTotalCount = () => {
         setTotalCount(state.count + tapCount);  
     };
@@ -21,9 +29,11 @@ export default function Clicker() {
         }
         const newTimeoutId = setTimeout(() => {
             setTapCount((prevTapCount) => {
-                if (prevTapCount > 0) {
+                if (prevTapCount > 0 && userToken) { 
                     incrementCount(userToken, prevTapCount);  
-                    localStorage.setItem("userCount", state.count + prevTapCount);
+                    if (typeof window !== 'undefined') {
+                        localStorage.setItem("userCount", state.count + prevTapCount);
+                    }
                 }
                 return prevTapCount; 
             });
@@ -31,9 +41,11 @@ export default function Clicker() {
 
         setTimeoutId(newTimeoutId);  
     };
+
     useEffect(() => {
         updateTotalCount();
     }, [state.count, tapCount]); 
+
     useEffect(() => {
         return () => {
             if (timeoutId) {
