@@ -10,6 +10,8 @@ import {
   getDocs,
   query,
   where,
+  orderBy,
+  limit
 } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics"; 
 
@@ -74,6 +76,28 @@ export async function getUserDataByEmailOrId(email = null, id = null) {
     throw error;
   }
 }
+export async function getTopUsers() {
+  try {
+    const q = query(
+      usersCollection,
+      orderBy("count", "desc"),  
+      limit(100)
+    );
+
+    const querySnapshot = await getDocs(q);
+    const topUsers = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      username: doc.data().username,
+      count: doc.data().count
+    }));
+
+    return topUsers;
+  } catch (error) {
+    console.error("Ошибка при получении топ 100 пользователей:", error);
+    return [];
+  }
+}
+
 export async function incrementCount(id, count) {
   try {
     const numericId = Number(id);
