@@ -7,8 +7,9 @@ export default function Nav() {
     return (
         <nav className="bottom-navigation">
             <Link href="/" className="nav-item">Menu</Link> 
-            <Link href="/" className="nav-item">Account</Link> 
+            <Link href="accaunt" className="nav-item">Account</Link> 
             <Link href="/" className="nav-item">Tasks</Link> 
+            <Link href="/" className="nav-item">Rating</Link> 
         </nav>
     );
 }

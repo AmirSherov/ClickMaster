@@ -23,16 +23,21 @@ export default function Login() {
         toast.success('Login successful');
         localStorage.setItem('userToken', user.id);
         setTimeout(() => {
+          setLoading(false); 
+        }, 2200);
+        setTimeout(() => {
           router.push('/');
-        }, 2000); 
+        }, 2000);
       } else {
+        setLoading(false);
         toast.error('Invalid username or password');
       }
     } catch (error) {
+      setLoading(false);
       console.error('Login error:', error);
       toast.error('An error occurred during login');
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -77,7 +82,7 @@ export default function Login() {
         <button
           type="submit"
           className="auth-button"
-          disabled={!email || !password || !validateEmail(email)} 
+          disabled={!email || !password || !validateEmail(email)}
         >
           {loading ? 'Logging in...' : 'Login'}
         </button>

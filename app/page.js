@@ -5,17 +5,30 @@ import { useRouter } from 'next/navigation';
 import Clicker from './clicker';
 import Nav from './nav';
 import UserInfo from './userinfo';
-
+import { getUserDataByEmailOrId } from './api';
+import { useGlobalContext } from './GlobalState';
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
-
+  const [userData, setUserData] = useState(null);
+  const {state , dispatch} = useGlobalContext();
   useEffect(() => {
     const userToken = localStorage.getItem('userToken');
     if (!userToken) {
       router.push('/Login');
+    } else {
+      GetUserData(userToken);
     }
-  })
+  },[])
+  async function GetUserData(id){
+    const userData = await getUserDataByEmailOrId(null, id);
+    setUserData(userData);
+    console.log(userData);
+    dispatch({type: 'SET_USER_NAME', payload: userData.username});
+    dispatch({type: 'SET_USER_COUNT', payload: userData.count});
+    dispatch({type: 'SET_USER_DATE', payload: userData.date});
+    dispatch({type: 'SET_USER_EMAIL', payload: userData.email});
+  }
   // useEffect(() => {
   //   const userAgent = navigator.userAgent.toLowerCase();
   //   const mobile = /iphone|ipod|android|webos|blackberry|iemobile|opera mini/i.test(userAgent);

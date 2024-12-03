@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import './registr.scss';
-import { registerUser } from '../api'; 
+import { registerUser } from '../api';
 import { toast, Toaster } from 'react-hot-toast';
 import Loading from "../loading"
 export default function Register() {
@@ -24,8 +24,9 @@ export default function Register() {
 
     try {
       const id = Date.now().toString();
-
-      const success = await registerUser(email, username, password, id);
+      const today = new Date();
+      const currentDate = `${String(today.getDate()).padStart(2, '0')}.${String(today.getMonth() + 1).padStart(2, '0')}.${today.getFullYear()}`;
+      const success = await registerUser(email, username, password, id, currentDate);
       if (success) {
         setTimeout(() => {
           setLoading(false);
@@ -72,16 +73,19 @@ export default function Register() {
         />
         <input
           type="text"
-          placeholder="Username"
+          placeholder="Username (3-8 characters)"
           value={username}
+          maxLength={8}
+          min={3}
           onChange={(e) => setUsername(e.target.value)}
           className="auth-input"
           required
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Password (8 characters)"
           value={password}
+          min={8}
           onChange={(e) => setPassword(e.target.value)}
           className="auth-input"
           required

@@ -2,6 +2,7 @@ export const metadata = {
   title: "Click Master",
   description: "Game of Clicking",
 };
+import { GlobalProvider } from "./GlobalState";
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -12,7 +13,7 @@ export default function RootLayout({ children }) {
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body>
-        {children}
+        <GlobalProvider>{children}</GlobalProvider>
       </body>
     </html>
   );
