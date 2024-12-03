@@ -43,7 +43,7 @@ export default function Rating() {
                 </div>
             </div>
             <Nav />
-        </>
+            </>
     );
 }
 

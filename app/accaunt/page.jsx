@@ -10,12 +10,19 @@ export default function Account() {
     const [isOpen, setIsOpen] = useState(false);
     const { state, dispatch } = useGlobalContext();
     const router = useRouter();
+    useEffect(() => {
+        const userToken = localStorage.getItem('userToken');
+        if (!userToken) {
+            router.push('/Login');
+        }
+    }, [router]);
 
     const maskEmail = (email) => {
         const [localPart, domain] = email.split('@');
         const maskedLocalPart = localPart.slice(0, 2) + '**';
         return `${maskedLocalPart}@${domain}`;
     };
+
     function logout() {
         if (typeof window !== 'undefined') {
             localStorage.removeItem('userToken');
@@ -26,16 +33,16 @@ export default function Account() {
         dispatch({ type: 'SET_USER_DATE', payload: '' });
         dispatch({ type: 'SET_USER_EMAIL', payload: '' });
         setIsOpen(false);
-        window.location.href = '/Login';
+        router.push('/Login');  
     }
 
     return (
         <div className="account-container">
             <h1>Account Information</h1>
             <div className="user-details">
-                <p><strong>Username:</strong>{state.userName}</p>
-                <p><strong>Registration Date:</strong>{state.date}</p>
-                <p><strong>Email:</strong> <span className="email-mask">{maskEmail(state.email)}</span></p>
+                <p><strong>Username:</strong> {state.userName || 'Unknown'}</p>
+                <p><strong>Registration Date:</strong> {state.date || 'N/A'}</p>
+                <p><strong>Email:</strong> <span className="email-mask">{maskEmail(state.email) || 'N/A'}</span></p>
                 <button onClick={() => setIsOpen(true)} className='logout'>Logout</button>
             </div>
             <Nav />

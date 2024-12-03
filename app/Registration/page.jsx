@@ -1,17 +1,27 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import './registr.scss';
 import { registerUser } from '../api';
 import { toast, Toaster } from 'react-hot-toast';
-import Loading from "../loading"
+import Loading from "../loading";
+
 export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [currentDate, setCurrentDate] = useState(null);
   const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const today = new Date();
+      const formattedDate = `${String(today.getDate()).padStart(2, '0')}.${String(today.getMonth() + 1).padStart(2, '0')}.${today.getFullYear()}`;
+      setCurrentDate(formattedDate);
+    }
+  }, []); 
 
   const handleRegister = async (e) => {
     setLoading(true);
@@ -19,30 +29,44 @@ export default function Register() {
 
     if (password !== confirmPassword) {
       toast.error("Passwords don't match");
+      setLoading(false);
+      return;
+    }
+
+    if (username.length < 3 || username.length > 8) {
+      toast.error("Username must be between 3 and 8 characters");
+      setLoading(false);
+      return;
+    }
+
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      setLoading(false);
       return;
     }
 
     try {
-      const id = Date.now().toString();
-      const today = new Date();
-      const currentDate = `${String(today.getDate()).padStart(2, '0')}.${String(today.getMonth() + 1).padStart(2, '0')}.${today.getFullYear()}`;
+      const id = Date.now().toString(); 
+      if (!currentDate) {
+        toast.error('Could not fetch current date');
+        setLoading(false);
+        return;
+      }
       const success = await registerUser(email, username, password, id, currentDate);
+
       if (success) {
-        setTimeout(() => {
-          setLoading(false);
-        }, 4000);
-        setTimeout(() => {
-          toast.success('Registration successful');
-        }, 4000);
+        toast.success('Registration successful');
         setTimeout(() => {
           router.push('/Login');
-        }, 6500)
+        }, 4000);
       } else {
         toast.error('Email is already taken');
       }
     } catch (error) {
       console.error('Error during registration:', error);
       toast.error('Registration failed');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -64,7 +88,7 @@ export default function Register() {
       <h1 className="auth-title">Register</h1>
       <form onSubmit={handleRegister} className="auth-form">
         <input
-          type="text"
+          type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -76,7 +100,7 @@ export default function Register() {
           placeholder="Username (3-8 characters)"
           value={username}
           maxLength={8}
-          min={3}
+          minLength={3}
           onChange={(e) => setUsername(e.target.value)}
           className="auth-input"
           required
@@ -85,7 +109,7 @@ export default function Register() {
           type="password"
           placeholder="Password (8 characters)"
           value={password}
-          min={8}
+          minLength={8}
           onChange={(e) => setPassword(e.target.value)}
           className="auth-input"
           required
@@ -98,7 +122,7 @@ export default function Register() {
           className="auth-input"
           required
         />
-        <button type="submit" className="auth-button">Register</button>
+        <button type="submit" className="auth-button" disabled={loading}>Register</button>
       </form>
       <p className="auth-text">Already have an account? <a href="/Login" className="auth-link">Login</a></p>
       {loading && <Loading />}
