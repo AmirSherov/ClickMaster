@@ -16,32 +16,6 @@ export default function Account() {
         const maskedLocalPart = localPart.slice(0, 2) + '**';
         return `${maskedLocalPart}@${domain}`;
     };
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const userToken = localStorage.getItem('userToken');
-            if (!userToken) {
-                router.push('/Login');
-                return;
-            }
-            const checkToken = async () => {
-                const response = await fetch('/api/check-token', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${userToken}`
-                    }
-                });
-
-                if (!response.ok) {
-                    router.push('/Login');
-                }
-            };
-
-            checkToken();
-        }
-    }, []);
-
     function logout() {
         if (typeof window !== 'undefined') {
             localStorage.removeItem('userToken');

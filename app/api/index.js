@@ -88,7 +88,8 @@ export async function getTopUsers() {
     const topUsers = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       username: doc.data().username,
-      count: doc.data().count
+      count: doc.data().count,
+      email: doc.data().email
     }));
 
     return topUsers;

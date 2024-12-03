@@ -6,24 +6,21 @@
     -webkit-tap-highlight-color: transparent;
     user-select: none;
 }
-
-body {
-    background-color: #121212;
-    color: #fff;
-    font-family: 'Poppins', sans-serif;
-    line-height: 1.6;
+.rating-wrapper{
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    height: 100%;
 }
-
+body{
+    background-color: black;
+}
 .rating-page-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    width: 90%;
+    width: 100%;
     max-width: 1200px;
     margin: 20px;
     padding: 30px;
@@ -73,6 +70,9 @@ body {
 
 .users-container {
     width: 100%;
+    .active {
+        background-color: #676565;
+    }
 }
 
 .rating-user {
@@ -90,10 +90,8 @@ body {
 }
 
 .rating-user:hover {
-    transform: scale(1.01   );
-    background-color: #444;
+    transform: scale(1.01);
 }
-
 .rating-user p {
     margin: 0 10px;
 }

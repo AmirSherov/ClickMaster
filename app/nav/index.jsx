@@ -16,7 +16,7 @@ export default function Nav() {
         <nav className="bottom-navigation">
             <Link href="/" className={`nav-item ${isActive('/') ? 'active' : ''}`}>Menu</Link>
             <Link href="/accaunt" className={`nav-item ${isActive('/accaunt') ? 'active' : ''}`}>Account</Link>
-            <Link href="/tasks" className={`nav-item ${isActive('/tasks') ? 'active' : ''}`}>Tasks</Link>
+            <Link href="/" className={`nav-item ${isActive('/tasks') ? 'active' : ''}`}>Tasks</Link>
             <Link href="/rating" className={`nav-item ${isActive('/rating') ? 'active' : ''}`}>Rating</Link>
         </nav>
     );
