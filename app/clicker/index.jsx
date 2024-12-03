@@ -52,7 +52,7 @@ const Clicker = () => {
                     .catch((err) => console.error('API error:', err))
                     .finally(() => setTapCount(0));
             }
-        }, 2000);
+        }, 1000);
     };
 
     useEffect(() => {
