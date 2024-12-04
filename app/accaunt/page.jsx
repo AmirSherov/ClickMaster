@@ -36,9 +36,7 @@ export default function Account() {
         router.push('/Login');
     }
     function UpdateUserField(id , field , value) {
-        setTimeout(() => {
             updateUserFieldById(id, field, value);
-        }, 2000);
     }
     return (
         <div className="account-container">
