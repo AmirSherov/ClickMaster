@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 export default function Account() {
     const [isOpen, setIsOpen] = useState(false);
     const { state, dispatch } = useGlobalContext();
+    const [isVibration, setIsVibration] = useState(state.vibration);
     const router = useRouter();
     useEffect(() => {
         const userToken = localStorage.getItem('userToken');
@@ -16,7 +17,6 @@ export default function Account() {
             router.push('/Login');
         }
     }, [router]);
-
     const maskEmail = (email) => {
         const [localPart, domain] = email.split('@');
         const maskedLocalPart = localPart.slice(0, 2) + '**';
@@ -33,18 +33,49 @@ export default function Account() {
         dispatch({ type: 'SET_USER_DATE', payload: '' });
         dispatch({ type: 'SET_USER_EMAIL', payload: '' });
         setIsOpen(false);
-        router.push('/Login');  
+        router.push('/Login');
     }
 
     return (
         <div className="account-container">
             <h1>Account Information</h1>
             <div className="user-details">
-                <p><strong>Username:</strong> {state.userName || 'Unknown'}</p>
-                <p><strong>Registration Date:</strong> {state.date || 'N/A'}</p>
-                <p><strong>Email:</strong> <span className="email-mask">{maskEmail(state.email) || 'N/A'}</span></p>
-                <button onClick={() => setIsOpen(true)} className='logout'>Logout</button>
+                <div className="item">
+                    <p>Username:</p>
+                    <p>{state.userName}</p>
+                </div>
+                <div className="item">
+                    <p>Email:</p>
+                    <p>{maskEmail(state.email)}</p>
+                </div>
+                <div className="item">
+                    <p>Balance:</p>
+                    <p>{state.count}</p>
+                </div>
+                <div className="item">
+                    <p>Registration Date:</p>
+                    <p>{state.date}</p>
+                </div>
             </div>
+            <div className="setting">
+                <h1>Settings</h1>
+                <div className="setting-items">
+                    <div className="item">
+                        <div>Vibration</div>
+                        <input
+                            type="checkbox"
+                            checked={isVibration}
+                            onChange={() => {
+                                const newVibrationState = !isVibration;
+                                setIsVibration(newVibrationState);
+                                dispatch({ type: 'SET_VIBRATION', payload: newVibrationState });
+                            }}
+                        />
+                        <div><div className='slider-setting'></div></div>
+                    </div>
+                </div>
+            </div>
+            <button onClick={() => setIsOpen(true)} className='logout'>Logout</button>
             <Nav />
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} onConfirm={() => logout()} text="Are you sure you want to log out?" />
         </div>

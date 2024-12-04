@@ -9,8 +9,18 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    animation: fade 0.5s ease-in-out;
   }
-  
+  @keyframes fade {
+    from {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
   .modal-container {
     background: #1e1e1e;
     color: #fff;
@@ -54,6 +64,10 @@
   .modal-button.cancel {
     background: #f44336;
     color: #fff;
+    transition: 0.1s;
+    &:active{
+        transform: scale(0.95);
+    }
   }
   
   .modal-button.cancel:hover {

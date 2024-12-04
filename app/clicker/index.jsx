@@ -12,6 +12,7 @@ const Clicker = () => {
     const [tapCount, setTapCount] = useState(0);
     const [userToken, setUserToken] = useState(null);
     const timeoutRef = useRef(null);
+    const [isVibration, setIsVibration] = useState(state.vibration);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -28,7 +29,9 @@ const Clicker = () => {
 
     const handleTap = (event) => {
         event.preventDefault();
-
+        if (isVibration) {
+            navigator.vibrate(100);
+        }
         const newTapCount = tapCount + 1;
         setTapCount(newTapCount);
         const updatedCount = (state.count || 0) + 1;
@@ -80,5 +83,4 @@ const Clicker = () => {
     );
 }
 
-// Делаем компонент доступным только на клиенте
 export default dynamic(() => Promise.resolve(Clicker), { ssr: false });

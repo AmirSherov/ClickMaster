@@ -6,6 +6,7 @@ const initialState = {
   userName: '',
   date : '',
   email: '',
+  vibration : false
 };
 function globalReducer(state, action) {
   switch (action.type) {
@@ -19,6 +20,8 @@ function globalReducer(state, action) {
         return { ...state, date: action.payload };
     case 'SET_USER_EMAIL':
       return { ...state, email: action.payload };
+    case 'SET_VIBRATION':
+      return { ...state, vibration: action.payload };
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
   }
