@@ -27,6 +27,8 @@ export default function Home() {
     dispatch({type: 'SET_USER_COUNT', payload: userData.count});
     dispatch({type: 'SET_USER_DATE', payload: userData.date});
     dispatch({type: 'SET_USER_EMAIL', payload: userData.email});
+    dispatch({type: 'SET_VIBRATION', payload: userData.vibration});
+    dispatch({type: 'SET_ID', payload: userData.id});
   }
   useEffect(() => {
     const userAgent = navigator.userAgent.toLowerCase();

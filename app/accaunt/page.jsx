@@ -5,7 +5,7 @@ import Modal from '../Modal';
 import { useState, useEffect } from 'react';
 import { useGlobalContext } from '../GlobalState';
 import { useRouter } from 'next/navigation';
-
+import { updateUserFieldById } from '../api';
 export default function Account() {
     const [isOpen, setIsOpen] = useState(false);
     const { state, dispatch } = useGlobalContext();
@@ -35,7 +35,11 @@ export default function Account() {
         setIsOpen(false);
         router.push('/Login');
     }
-
+    function UpdateUserField(id , field , value) {
+        setTimeout(() => {
+            updateUserFieldById(id, field, value);
+        }, 2000);
+    }
     return (
         <div className="account-container">
             <h1>Account Information</h1>
@@ -68,7 +72,8 @@ export default function Account() {
                             onChange={() => {
                                 const newVibrationState = !isVibration;
                                 setIsVibration(newVibrationState);
-                                dispatch({ type: 'SET_VIBRATION', payload: newVibrationState });
+                                dispatch({ type: 'SET_VIBRATION', payload: newVibrationState })
+                                UpdateUserField(state.id, 'vibration', newVibrationState);
                             }}
                         />
                         <div><div className='slider-setting'></div></div>

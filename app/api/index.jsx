@@ -13,7 +13,7 @@ import {
   orderBy,
   limit
 } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics"; 
+import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCzZO-Qae4DiGb9T6DuzbgwitbnPZ8v6h0",
@@ -39,10 +39,11 @@ export async function addUser(email, username, password, id, currentDate) {
   const newUser = {
     email,
     username,
-    password,  
-    id: parseInt(id, 10),  
-    count: 0, 
-    date: currentDate
+    password,
+    id: parseInt(id, 10),
+    count: 0,
+    date: currentDate,
+    vibration: false
   };
 
   try {
@@ -51,6 +52,27 @@ export async function addUser(email, username, password, id, currentDate) {
     console.error("Ошибка при добавлении пользователя:", error);
   }
 }
+export async function updateUserFieldById(id, field, value) {
+  try {
+    const usersCollection = collection(db, "users");
+    const userQuery = query(usersCollection, where("id", "==", id));
+    const querySnapshot = await getDocs(userQuery);
+
+    if (!querySnapshot.empty) {
+      const userDoc = querySnapshot.docs[0];
+      const userDocRef = doc(db, "users", userDoc.id);
+
+  
+      await updateDoc(userDocRef, { [field]: value });
+      console.log(`Поле "${field}" успешно обновлено для пользователя с ID: ${id}`);
+    } else {
+      console.error("Пользователь с таким ID не найден!");
+    }
+  } catch (error) {
+    console.error("Ошибка при обновлении пользователя:", error);
+  }
+}
+
 export async function getUserDataByEmailOrId(email = null, id = null) {
   try {
     if (!email && !id) {
@@ -66,7 +88,7 @@ export async function getUserDataByEmailOrId(email = null, id = null) {
     const querySnapshot = await getDocs(userQuery);
     if (!querySnapshot.empty) {
       const userDoc = querySnapshot.docs[0];
-      return { id: userDoc.id, ...userDoc.data() }; 
+      return { id: userDoc.id, ...userDoc.data() };
     } else {
       console.error("Пользователь не найден!");
       return null;
@@ -80,7 +102,7 @@ export async function getTopUsers() {
   try {
     const q = query(
       usersCollection,
-      orderBy("count", "desc"),  
+      orderBy("count", "desc"),
       limit(100)
     );
 
@@ -127,14 +149,14 @@ export async function getUserByUsernameAndPassword(email, password) {
     const q = query(
       usersCollection,
       where("email", "==", email),
-      where("password", "==", password) 
+      where("password", "==", password)
     );
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
       return querySnapshot.docs[0].data();
     }
-    return null; 
+    return null;
   } catch (error) {
     console.error("Error fetching user:", error);
     throw error;
