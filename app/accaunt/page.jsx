@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { useGlobalContext } from '../GlobalState';
 import { useRouter } from 'next/navigation';
 import { updateUserFieldById } from '../api';
+
 export default function Account() {
     const [isOpen, setIsOpen] = useState(false);
     const { state, dispatch } = useGlobalContext();

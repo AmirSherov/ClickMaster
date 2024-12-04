@@ -3,7 +3,7 @@ import './clicker.scss';
 import React, { useState, useEffect, useRef } from "react";
 import { useGlobalContext } from '../GlobalState';
 import { incrementCount } from '../api';
-
+import ProgressBar from '../progressbar';
 
 import dynamic from 'next/dynamic';
 
@@ -67,11 +67,13 @@ const Clicker = () => {
     }, []);
 
     const displayCount = state.count || parseInt(localStorage.getItem("userCount"), 10) || 0;
-
+    function formatNumber(number) {
+        return new Intl.NumberFormat('ru-RU').format(number);
+    }
     return (
         <div className="clicker-container">
             <h1>Click Master</h1>
-            <p className="counter-display">{displayCount}</p>
+            <p className="counter-display">{formatNumber(displayCount)}</p>
             <button
                 role="button"
                 className="button-92"
@@ -79,6 +81,7 @@ const Clicker = () => {
             >
                 Tap
             </button>
+            <ProgressBar value={displayCount} max={30000} />
         </div>
     );
 }
