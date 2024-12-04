@@ -1,41 +1,84 @@
-.user-info-button {
-    width: 150px;
-    height: 50px;
-    position: absolute;
+.user-info-container {
+    position: fixed;
     top: 10px;
     right: 10px;
+    z-index: 100;
+}
+
+.user-info-button {
+    min-width: 150px;
+    height: 50px;
     display: flex;
     align-items: center;
-    gap: 10px; 
-    padding: 5px 20px; 
-    border: 2px solid #2c2d2d95; 
-    border-radius: 12px; 
-    background-color: #736b6b3f;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
-    font-size: 1rem; 
-    font-weight: bold; 
-    transition: box-shadow 0.3s ease, transform 0.3s ease; 
-    text-align: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 5px 20px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(115, 107, 107, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     color: white;
-    &:hover {
-        color: #0077ff; 
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-        transform: scale(1.05); 
-        border: none;
-        background-color: #ffffffbb;
-        cursor: pointer;
-    }
-    &:active {
-        transform: scale(0.95); 
+    font-size: 1rem;
+    font-weight: 600;
+    transform: translateZ(0);
+    will-change: transform;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+
+    .user-name {
+        margin-right: auto;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    svg {
-        font-size: 1.8rem; 
-        color: #0077ff; 
-        transition: color 0.3s ease;
+    .user-icon {
+        font-size: 1.8rem;
+        color: #0077ff;
+        flex-shrink: 0;
+        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @media (hover: hover) {
+        &:hover {
+            background: rgba(255, 255, 255, 0.9);
+            color: #0077ff;
+            transform: translateY(-2px);
+            box-shadow: 
+                0 4px 12px rgba(0, 119, 255, 0.1),
+                0 2px 4px rgba(0, 119, 255, 0.1);
+
+            .user-icon {
+                transform: scale(1.1);
+            }
+        }
+    }
+
+    &:active {
+        transform: translateY(1px);
+        background: rgba(255, 255, 255, 0.95);
+    }
+
+    @media (max-width: 480px) {
+        min-width: 120px;
+        height: 40px;
+        padding: 4px 12px;
+        font-size: 0.9rem;
+
+        .user-icon {
+            font-size: 1.5rem;
+        }
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .user-info-button {
+        background: rgba(45, 45, 45, 0.4);
 
         &:hover {
-            color: #005bb5; 
+            background: rgba(60, 60, 60, 0.95);
         }
     }
 }

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tanstack/react-virtual": "^3.10.9",
     "firebase": "^11.0.2",
     "next": "15.0.3",
     "react": "^18.2.0",

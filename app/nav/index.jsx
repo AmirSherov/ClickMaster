@@ -1,23 +1,47 @@
 'use client';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { useMemo } from 'react';
 import './nav.scss';
 
+const NAV_ITEMS = [
+  { path: '/', label: 'Menu' },
+  { path: '/accaunt', label: 'Account' },
+  // { path: '/tasks', label: 'Tasks' },
+  { path: '/rating', label: 'Rating' }
+];
+
+const NavItem = ({ path, label, isActive }) => (
+  <Link
+    href={path}
+    className={`nav-item ${isActive ? 'active' : ''}`}
+    prefetch={true}
+  >
+    {label}
+  </Link>
+);
+
 export default function Nav() {
-    const [currentPath, setCurrentPath] = useState('');
+    const pathname = usePathname();
 
-    useEffect(() => {
-        setCurrentPath(window.location.pathname);
-    }, []);
-
-    const isActive = (path) => currentPath === path;
+    const navItems = useMemo(() => 
+      NAV_ITEMS.map(item => ({
+        ...item,
+        isActive: pathname === item.path
+      })),
+      [pathname]
+    );
 
     return (
         <nav className="bottom-navigation">
-            <Link href="/" className={`nav-item ${isActive('/') ? 'active' : ''}`}>Menu</Link>
-            <Link href="/accaunt" className={`nav-item ${isActive('/accaunt') ? 'active' : ''}`}>Account</Link>
-            <Link href="/" className={`nav-item ${isActive('/tasks') ? 'active' : ''}`}>Tasks</Link>
-            <Link href="/rating" className={`nav-item ${isActive('/rating') ? 'active' : ''}`}>Rating</Link>
+            {navItems.map(({ path, label, isActive }) => (
+                <NavItem
+                    key={path}
+                    path={path}
+                    label={label}
+                    isActive={isActive}
+                />
+            ))}
         </nav>
     );
 }

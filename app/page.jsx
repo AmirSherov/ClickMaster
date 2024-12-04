@@ -7,7 +7,7 @@ import Nav from './nav';
 import UserInfo from './userinfo';
 import { getUserDataByEmailOrId } from './api';
 import { useGlobalContext } from './GlobalState';
-export default function Home() {
+ function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
   const {state , dispatch} = useGlobalContext();
@@ -48,3 +48,4 @@ export default function Home() {
   );
 }
 
+export default Home
