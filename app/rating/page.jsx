@@ -13,7 +13,9 @@ export default function Rating() {
         const topUsers = await getTopUsers();
         setUsers(topUsers);
     }
-
+    function formatNumber(number) {
+        return new Intl.NumberFormat('ru-RU').format(number);
+    }
     useEffect(() => {
         topUsers();
     }, []);
@@ -35,7 +37,7 @@ export default function Rating() {
                         {users.map((user, index) => (
                             <div className={user.email === state.email ? "rating-user active" : "rating-user"} key={user.id}>
                                 <p>{user.username}</p>
-                                <p>{user.count}</p>
+                                <p>{formatNumber(user.count)}</p>
                                 <p>{index + 1}#</p>
                             </div>
                         ))}
@@ -43,7 +45,7 @@ export default function Rating() {
                 </div>
             </div>
             <Nav />
-            </>
+        </>
     );
 }
 

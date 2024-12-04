@@ -39,6 +39,9 @@ export default function Account() {
     function UpdateUserField(id , field , value) {
             updateUserFieldById(id, field, value);
     }
+    function formatNumber(number) {
+        return new Intl.NumberFormat('ru-RU').format(number);
+    }
     return (
         <div className="account-container">
             <h1>Account Information</h1>
@@ -53,7 +56,7 @@ export default function Account() {
                 </div>
                 <div className="item">
                     <p>Balance:</p>
-                    <p>{state.count}</p>
+                    <p>{formatNumber(state.count)}</p>
                 </div>
                 <div className="item">
                     <p>Registration Date:</p>
