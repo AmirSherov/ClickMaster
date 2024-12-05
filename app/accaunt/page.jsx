@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { useGlobalContext } from '../GlobalState';
 import { useRouter } from 'next/navigation';
 import { updateUserFieldById } from '../api';
-
+import { IoCheckmark } from "react-icons/io5";
 export default function Account() {
     const [isOpen, setIsOpen] = useState(false);
     const { state, dispatch } = useGlobalContext();
@@ -23,7 +23,14 @@ export default function Account() {
         const maskedLocalPart = localPart.slice(0, 2) + '**';
         return `${maskedLocalPart}@${domain}`;
     };
-
+    const Achives = {
+        "Tap 1 000 click": 1000,
+        "Tap 5 000 click": 5000,
+        "Tap 10 000 click": 10000,
+        "Tap 30 000 click": 30000,
+        "Tap 50 000 click": 50000,
+        "Tap 100 000 click": 100000
+    }
     function logout() {
         if (typeof window !== 'undefined') {
             localStorage.removeItem('userToken');
@@ -36,12 +43,13 @@ export default function Account() {
         setIsOpen(false);
         router.push('/Login');
     }
-    function UpdateUserField(id , field , value) {
-            updateUserFieldById(id, field, value);
+    function UpdateUserField(id, field, value) {
+        updateUserFieldById(id, field, value);
     }
     function formatNumber(number) {
         return new Intl.NumberFormat('ru-RU').format(number);
     }
+    const currentCount = state.count;
     return (
         <div className="account-container">
             <h1>Account Information</h1>
@@ -85,6 +93,25 @@ export default function Account() {
             <button onClick={() => setIsOpen(true)} className='logout'>Logout</button>
             <Nav />
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} onConfirm={() => logout()} text="Are you sure you want to log out?" />
+            <div className="achives-container">
+                <h1>Account Achives</h1>
+                <div className="achives-items">
+                    {Object.entries(Achives).map(([key, value]) => {
+                        const isAchieved = currentCount >= value;
+                        const progressPercentage = (currentCount / value) * 100;
+
+                        return (
+                            <div key={value} className="item-achive">
+                                <p>{key}</p>
+                                <div className="progress-bar-achive">
+                                    <div className="progress-achive" style={{ width: `${isAchieved ? 100 : progressPercentage}%` }}></div>
+                                </div>
+                                {isAchieved && <span className="checkmark-achive">< IoCheckmark /></span>}
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
         </div>
     );
 }
