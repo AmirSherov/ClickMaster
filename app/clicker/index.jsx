@@ -1,3 +1,4 @@
+
 // 'use client';
 // import './clicker.scss';
 // import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
@@ -7,6 +8,18 @@
 // import dynamic from 'next/dynamic';
 
 // const DEBOUNCE_DELAY = 400;
+
+// // Определение рангов и их пороговых значений
+// const RANKS = [
+//     { name: "Новичок", threshold: 0 },
+//     { name: "Ученик", threshold: 100 },
+//     { name: "Адепт", threshold: 500 },
+//     { name: "Мастер", threshold: 2000 },
+//     { name: "Гранд-мастер", threshold: 5000 },
+//     { name: "Легенда", threshold: 10000 },
+//     { name: "Божество", threshold: 30000 },
+//     { name: "Бессмертный", threshold: 100000 }
+// ];
 
 // const Clicker = () => {
 //     const { state, dispatch } = useGlobalContext();
@@ -86,10 +99,33 @@
 //         state.count || parseInt(localStorage.getItem("userCount"), 10) || 0
 //     ), [state.count]);
 
+//     // Функция определения текущего ранга и следующего порога
+//     const getCurrentRankInfo = useMemo(() => {
+//         const count = displayCount;
+//         let currentRank = RANKS[0];
+//         let nextRank = RANKS[1];
+
+//         for (let i = RANKS.length - 1; i >= 0; i--) {
+//             if (count >= RANKS[i].threshold) {
+//                 currentRank = RANKS[i];
+//                 nextRank = RANKS[i + 1] || RANKS[i];
+//                 break;
+//             }
+//         }
+
+//         return {
+//             currentRank,
+//             nextRank,
+//             progress: count,  // Изменено: теперь передаем общее количество кликов
+//             total: nextRank.threshold  // Изменено: теперь передаем порог следующего ранга
+//         };
+//     }, [displayCount]);
+
 //     return (
 //         <div className="clicker-container">
-//             <h1>Click Master</h1>
+//             <h1 className='clicker-title'>Click Master</h1>
 //             <p className="counter-display">{formatNumber(displayCount)}</p>
+//             <p className="rank-display">Ранг: {getCurrentRankInfo.currentRank.name}</p>
 //             <button
 //                 role="button"
 //                 className="button-92"
@@ -97,7 +133,11 @@
 //             >
 //                 Tap
 //             </button>
-//             <ProgressBar value={displayCount} max={30000} />
+//             <ProgressBar 
+//                 value={getCurrentRankInfo.progress} 
+//                 max={getCurrentRankInfo.total} 
+//                 rankName={getCurrentRankInfo.nextRank.name}
+//             />
 //         </div>
 //     );
 // }
@@ -131,6 +171,7 @@ const Clicker = () => {
     const [userToken, setUserToken] = useState(null);
     const timeoutRef = useRef(null);
     const [isVibration] = useState(state.vibration);
+    let touchCount = 0; // Счетчик касаний
 
     // Инициализация состояния из localStorage
     useEffect(() => {
@@ -190,12 +231,29 @@ const Clicker = () => {
         }, DEBOUNCE_DELAY);
     }, [isVibration, state.count, tapCount, syncWithServer, dispatch]);
 
+    // Обработчик для управления многопоточными касаниями
+    const handleTouchStart = (event) => {
+        touchCount = event.touches.length;
+        if (touchCount > 4) {
+            event.preventDefault(); // Предотвращаем поведение по умолчанию, если касаний больше 4
+        }
+    };
+
+    const handleTouchEnd = () => {
+        touchCount = 0; // Сбрасываем счетчик при завершении касания
+    };
+
     // Очистка таймера при размонтировании
     useEffect(() => {
+        document.addEventListener('touchstart', handleTouchStart, { passive: false });
+        document.addEventListener('touchend', handleTouchEnd);
+
         return () => {
             if (timeoutRef.current) {
                 clearTimeout(timeoutRef.current);
             }
+            document.removeEventListener('touchstart', handleTouchStart);
+            document.removeEventListener('touchend', handleTouchEnd);
         };
     }, []);
 
