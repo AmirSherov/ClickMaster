@@ -11,7 +11,6 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/logo.webp" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
-        <script src="https://telegram.org/js/telegram-web-app.js"></script>
       </head>
       <body>
         <GlobalProvider>{children}</GlobalProvider>
