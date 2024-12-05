@@ -22,17 +22,23 @@ function Home() {
       }
     }
     // Инициализация Telegram WebApp
-    const tg = window.Telegram.WebApp;
+    try {
+      if (window.Telegram && window.Telegram.WebApp) {
+        const tg = window.Telegram.WebApp;
+        
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+          const user = tg.initDataUnsafe.user;
+          const userId = user.id;
+          const username = user.username;
 
-    // Получение информации о пользователе
-    const user = tg.initDataUnsafe.user;
-
-    // Получение id и username
-    const userId = user.id;
-    const username = user.username;
-
-    console.log('User ID:', userId);
-    console.log('Username:', username);
+          console.log('User ID:', userId);
+          console.log('Username:', username);
+          
+        }
+      }
+    } catch (error) {
+      console.error('Error initializing Telegram WebApp:', error);
+    }
   }, [])
   async function GetUserData(id) {
     const userData = await getUserDataByEmailOrId(null, id);
