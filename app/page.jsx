@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Clicker from './clicker';
 import Nav from './nav';
 import UserInfo from './userinfo';
+import LoadingScreen from './LoadingScreen';
 import { getUserDataByEmailOrId } from './api';
 import { useGlobalContext } from './GlobalState';
  function Home() {
@@ -41,6 +42,7 @@ import { useGlobalContext } from './GlobalState';
 
   return (
     <div className="landing-page-container">
+      <LoadingScreen />
       <UserInfo />
       <Clicker />
       <Nav />
