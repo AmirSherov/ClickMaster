@@ -11,14 +11,18 @@
     text-align: center;
     background: linear-gradient(135deg, #000, #222);
     box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.6);
+
     .clicker-title {
         color: #fff;
+        font-size: 35px;
         text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5);
         animation: glow-white 1.5s infinite alternate;
+
         @media (max-width: 350px) {
             font-size: 2rem;
         }
     }
+
     h1 {
         font-size: 3rem;
         color: #fff;
@@ -34,7 +38,7 @@
     }
 
     .counter-display {
-        font-size: 3rem;
+        font-size: 2rem;
         font-weight: bold;
         color: #fff;
         text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5);
@@ -49,8 +53,8 @@
         font-weight: bold;
         font-size: 1.8rem;
         cursor: pointer;
-        width: 270px;
-        height: 250px;
+        width: 230px;
+        height: 200px;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -58,11 +62,130 @@
         text-transform: uppercase;
         transition: transform 0.1s ease, background 0.1s ease, box-shadow 0.3s ease;
 
+        &.fire-effect {
+            animation: pulse 0.5s infinite;
+            position: relative;
+            overflow: hidden;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 200%;
+                height: 200%;
+                background: repeating-conic-gradient(from 0deg,
+                        #ff8800 0deg 20deg,
+                        #ff4400 20deg 40deg,
+                        #ff0000 40deg 60deg);
+                animation: rotate 3s linear infinite;
+                transform: translate(-50%, -50%);
+                z-index: -1;
+                opacity: 0.7;
+            }
+
+            &::after {
+                content: '';
+                position: absolute;
+                inset: 3px;
+                background: #1a1a1a;
+                border-radius: 50%;
+                z-index: -1;
+            }
+
+            .fire-particles {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+
+                .particle {
+                    position: absolute;
+                    background: radial-gradient(circle, #ff6600 0%, transparent 70%);
+                    border-radius: 50%;
+                    animation: float-up 1s ease-out infinite;
+                    opacity: 0;
+
+                    @for $i from 1 through 12 {
+                        &:nth-child(#{$i}) {
+                            left: percentage(random(100) / 100);
+                            width: #{random(10) + 5}px;
+                            height: #{random(10) + 5}px;
+                            animation-delay: #{random(1000) / 1000}s;
+                        }
+                    }
+                }
+            }
+        }
+
         &:active {
             background: linear-gradient(90deg, #666, #222);
         }
     }
 
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 20px #ff4400,
+                0 0 40px #ff6600;
+        }
+
+        50% {
+            box-shadow: 0 0 30px #ff4400,
+                0 0 60px #ff6600;
+        }
+
+        100% {
+            box-shadow: 0 0 20px #ff4400,
+                0 0 40px #ff6600;
+        }
+    }
+
+    @keyframes rotate {
+        from {
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+
+        to {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
+    }
+
+    @keyframes float-up {
+        0% {
+            transform: translateY(100%) scale(1);
+            opacity: 0.8;
+        }
+
+        100% {
+            transform: translateY(-100%) scale(0);
+            opacity: 0;
+        }
+    }
+
+    .upgrade-button {
+        display: inline-block;
+        padding: 9px 20px;
+        background-color: #007BFF;
+        color: #fff;
+        font-size: 25px;
+        text-decoration: none;
+        border-radius: 15px;
+        transition: background-color 0.3s ease;
+        position: relative;
+        border: none;
+        outline: none;
+        top: -40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        span {
+            font-size: 15px;
+        }
+    }
 
     @keyframes glow-white {
         from {

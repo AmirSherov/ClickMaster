@@ -6,7 +6,8 @@ import { useGlobalContext } from '../GlobalState';
 import { incrementCount } from '../api';
 import ProgressBar from '../progressbar';
 import dynamic from 'next/dynamic';
-
+import { GiUpgrade } from "react-icons/gi";
+import { useRouter } from 'next/navigation';
 const DEBOUNCE_DELAY = 400;
 
 
@@ -28,6 +29,7 @@ const Clicker = () => {
     const [userToken, setUserToken] = useState(null);
     const timeoutRef = useRef(null);
     const [isVibration] = useState(state.vibration);
+    const router = useRouter();
 
     useEffect(() => {
         if (typeof window === 'undefined') return;
@@ -64,25 +66,34 @@ const Clicker = () => {
 
     const handleTap = useCallback((event) => {
         event.preventDefault();
+        const clickMultiplier = state.multiply || 1;
+        const clickPower = state.click || 1;
+        const totalClickValue = clickPower * clickMultiplier;
         
         if (isVibration) {
             navigator.vibrate(100);
         }
 
-        setTapCount(prev => prev + 1);
+        setTapCount(prev => prev + totalClickValue);
+        const newCount = (state.count || 0) + totalClickValue;
         
-        const newCount = (state.count || 0) + 1;
         dispatch({ type: 'UPDATE_COUNT', payload: newCount });
-        localStorage.setItem("userCount", newCount.toString());
 
         if (timeoutRef.current) {
             clearTimeout(timeoutRef.current);
         }
 
-        timeoutRef.current = setTimeout(() => {
-            syncWithServer(tapCount + 1);
+        timeoutRef.current = setTimeout(async () => {
+            try {
+                const updatedCount = await incrementCount(state.id, newCount);
+                if (updatedCount !== null) {
+                    dispatch({ type: 'UPDATE_COUNT', payload: updatedCount });
+                }
+            } catch (error) {
+                console.error('Ошибка при обновлении счетчика:', error);
+            }
         }, DEBOUNCE_DELAY);
-    }, [isVibration, state.count, tapCount, syncWithServer, dispatch]);
+    }, [state.id, state.count, state.click, state.multiply, isVibration, dispatch]);
 
     useEffect(() => {
         return () => {
@@ -124,16 +135,25 @@ const Clicker = () => {
             <p className="rank-display">Ранг: {getCurrentRankInfo.currentRank.name}</p>
             <button
                 role="button"
-                className="button-92"
+                className={`button-92 ${state.multiply > 1 ? 'fire-effect' : ''}`}
                 onPointerDown={handleTap}
             >
                 Tap
+                {state.multiply > 1 && (
+                    <div className="fire-particles">
+                        {[...Array(12)].map((_, i) => (
+                            <div key={i} className="particle" />
+                        ))}
+                    </div>
+                )}
             </button>
             <ProgressBar 
                 value={getCurrentRankInfo.progress} 
                 max={getCurrentRankInfo.total} 
                 rankName={getCurrentRankInfo.nextRank.name}
             />
+                    <button className="upgrade-button" onClick={() => router.push('/UpgradePage')}><GiUpgrade className="upgrade-icon" /><span>Upgrade</span></button>
+
         </div>
     );
 }

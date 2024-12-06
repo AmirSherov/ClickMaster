@@ -43,7 +43,8 @@ export async function addUser(email, username, password, id, currentDate) {
     id: parseInt(id, 10),
     count: 0,
     date: currentDate,
-    vibration: false
+    vibration: false,
+    click : 1
   };
 
   try {
@@ -121,7 +122,7 @@ export async function getTopUsers() {
   }
 }
 
-export async function incrementCount(id, count) {
+export async function incrementCount(id, newCount) {
   try {
     const numericId = Number(id);
     const userQuery = query(usersCollection, where("id", "==", numericId));
@@ -130,17 +131,19 @@ export async function incrementCount(id, count) {
 
     if (!querySnapshot.empty) {
       const userDoc = querySnapshot.docs[0];
-      const currentCount = userDoc.data().count || 0;
       await updateDoc(doc(db, "users", userDoc.id), {
-        count: currentCount + count,
+        count: newCount
       });
 
-      console.log(`Счётчик для пользователя ${numericId} обновлён: ${currentCount + count}`);
+      console.log(`Счётчик для пользователя ${numericId} обновлён: ${newCount}`);
+      return newCount;
     } else {
       console.error("Пользователь не найден!");
+      return null;
     }
   } catch (error) {
     console.error("Ошибка при обновлении счётчика:", error);
+    return null;
   }
 }
 

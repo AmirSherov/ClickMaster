@@ -8,7 +8,7 @@ import UserInfo from './userinfo';
 import LoadingScreen from './LoadingScreen';
 import { getUserDataByEmailOrId } from './api';
 import { useGlobalContext } from './GlobalState';
-import { GiUpgrade } from "react-icons/gi";
+import Boost from './Boost';
 function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
@@ -31,6 +31,7 @@ function Home() {
     dispatch({ type: 'SET_USER_EMAIL', payload: userData.email });
     dispatch({ type: 'SET_VIBRATION', payload: userData.vibration });
     dispatch({ type: 'SET_ID', payload: userData.id });
+    dispatch({ type: 'SET_CLICK', payload: userData.click });
   }
   useEffect(() => {
     const userAgent = navigator.userAgent.toLowerCase();
@@ -46,7 +47,7 @@ function Home() {
       <LoadingScreen />
       <UserInfo />
       <Clicker />
-        <button className="upgrade-button" onClick={() => router.push('/UpgradePage')}><GiUpgrade className="upgrade-icon" /><span>Upgrade</span></button>
+      <Boost />
       <Nav />
     </div>
   );

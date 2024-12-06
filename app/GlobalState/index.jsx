@@ -1,5 +1,6 @@
 'use client';
 import React, { createContext, useReducer, useContext } from 'react';
+import clicker from '../clicker';
 
 const initialState = {
   count: 0,
@@ -8,7 +9,9 @@ const initialState = {
   email: '',
   vibration : false,
   id : 0,
-  loading : false
+  loading : false,
+  click : 1,
+  multiply : 1
 };
 function globalReducer(state, action) {
   switch (action.type) {
@@ -28,6 +31,10 @@ function globalReducer(state, action) {
       return { ...state, id: action.payload };
     case 'SET_LOADING':
       return { ...state, loading: action.payload };
+    case 'SET_CLICK':
+      return { ...state, click: action.payload };
+    case 'SET_MULTIPLY':
+      return { ...state, multiply: action.payload };
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
   }

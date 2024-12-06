@@ -12,25 +12,3 @@ body {
     color: #f5f5f5; 
     line-height: 1.6;
 }
-.upgrade-button {
-    display: inline-block;
-    padding: 9px 20px; 
-    background-color: #007BFF; 
-    color: #fff; 
-    font-size: 25px;
-    text-decoration: none; 
-    border-radius: 15px; 
-    transition: background-color 0.3s ease;
-    position: fixed;
-    border: none;
-    outline: none;
-    right: 30px;
-    bottom: 70px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    span{
-        font-size: 15px;
-    }
-}
