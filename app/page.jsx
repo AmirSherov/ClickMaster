@@ -33,14 +33,14 @@ function Home() {
     dispatch({ type: 'SET_ID', payload: userData.id });
     dispatch({ type: 'SET_CLICK', payload: userData.click });
   }
-  // useEffect(() => {
-  //   const userAgent = navigator.userAgent.toLowerCase();
-  //   const mobile = /iphone|ipod|android|webos|blackberry|iemobile|opera mini/i.test(userAgent);
-  //   setIsMobile(mobile); 
-  //   if (!mobile) {
-  //     router.push('/404');
-  //   }
-  // }, [router]);
+  useEffect(() => {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const mobile = /iphone|ipod|android|webos|blackberry|iemobile|opera mini/i.test(userAgent);
+    setIsMobile(mobile); 
+    if (!mobile) {
+      router.push('/404');
+    }
+  }, [router]);
 
   return (
     <div className="landing-page-container">
