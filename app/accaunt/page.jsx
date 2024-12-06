@@ -14,7 +14,7 @@ export default function Account() {
     const router = useRouter();
     useEffect(() => {
         const userToken = localStorage.getItem('userToken');
-        if (!userToken) {
+        if (!userToken) {  
             router.push('/Login');
         }
     }, [router]);
@@ -29,7 +29,8 @@ export default function Account() {
         "Tap 10 000 click": 10000,
         "Tap 30 000 click": 30000,
         "Tap 50 000 click": 50000,
-        "Tap 100 000 click": 100000
+        "Tap 100 000 click": 100000,
+        "Tap 5 000 000 click": 5000000,
     }
     function logout() {
         if (typeof window !== 'undefined') {

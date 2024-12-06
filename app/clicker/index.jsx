@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic';
 
 const DEBOUNCE_DELAY = 400;
 
-// Определение рангов и их пороговых значений
+
 const RANKS = [
     { name: "Новичок", threshold: 0 },
     { name: "Ученик", threshold: 100 },
@@ -18,7 +18,8 @@ const RANKS = [
     { name: "Гранд-мастер", threshold: 5000 },
     { name: "Легенда", threshold: 10000 },
     { name: "Божество", threshold: 30000 },
-    { name: "Бессмертный", threshold: 100000 }
+    { name: "Бессмертный", threshold: 100000 },
+    { name: "Космический", threshold: 5000000 }
 ];
 
 const Clicker = () => {
@@ -28,7 +29,6 @@ const Clicker = () => {
     const timeoutRef = useRef(null);
     const [isVibration] = useState(state.vibration);
 
-    // Инициализация состояния из localStorage
     useEffect(() => {
         if (typeof window === 'undefined') return;
 
@@ -41,13 +41,12 @@ const Clicker = () => {
         }
     }, [dispatch]);
 
-    // Мемоизированная функция форматирования чисел
     const formatNumber = useMemo(() => {
         const formatter = new Intl.NumberFormat('ru-RU');
         return (number) => formatter.format(number);
     }, []);
 
-    // Оптимизированная функция синхронизации с сервером
+
     const syncWithServer = useCallback(async (count) => {
         if (!userToken || count === 0) return;
 
@@ -63,7 +62,6 @@ const Clicker = () => {
         setTapCount(0);
     }, [userToken, dispatch]);
 
-    // Оптимизированный обработчик нажатия
     const handleTap = useCallback((event) => {
         event.preventDefault();
         
@@ -86,7 +84,6 @@ const Clicker = () => {
         }, DEBOUNCE_DELAY);
     }, [isVibration, state.count, tapCount, syncWithServer, dispatch]);
 
-    // Очистка таймера при размонтировании
     useEffect(() => {
         return () => {
             if (timeoutRef.current) {
@@ -99,7 +96,6 @@ const Clicker = () => {
         state.count || parseInt(localStorage.getItem("userCount"), 10) || 0
     ), [state.count]);
 
-    // Функция определения текущего ранга и следующего порога
     const getCurrentRankInfo = useMemo(() => {
         const count = displayCount;
         let currentRank = RANKS[0];
@@ -116,8 +112,8 @@ const Clicker = () => {
         return {
             currentRank,
             nextRank,
-            progress: count,  // Изменено: теперь передаем общее количество кликов
-            total: nextRank.threshold  // Изменено: теперь передаем порог следующего ранга
+            progress: count, 
+            total: nextRank.threshold  
         };
     }, [displayCount]);
 

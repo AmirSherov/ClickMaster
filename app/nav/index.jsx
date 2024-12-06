@@ -7,7 +7,7 @@ import './nav.scss';
 const NAV_ITEMS = [
   { path: '/', label: 'Menu' },
   { path: '/accaunt', label: 'Account' },
-  // { path: '/tasks', label: 'Tasks' },
+  { path: '/UpgradePage', label: 'Upgrade' },
   { path: '/rating', label: 'Rating' }
 ];
 

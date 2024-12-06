@@ -8,6 +8,7 @@ import UserInfo from './userinfo';
 import LoadingScreen from './LoadingScreen';
 import { getUserDataByEmailOrId } from './api';
 import { useGlobalContext } from './GlobalState';
+import { GiUpgrade } from "react-icons/gi";
 function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
@@ -45,6 +46,7 @@ function Home() {
       <LoadingScreen />
       <UserInfo />
       <Clicker />
+        <button className="upgrade-button" onClick={() => router.push('/UpgradePage')}><GiUpgrade className="upgrade-icon" /><span>Upgrade</span></button>
       <Nav />
     </div>
   );
