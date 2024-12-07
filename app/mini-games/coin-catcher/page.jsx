@@ -84,7 +84,7 @@ export default function CoinCatcher() {
                     return 0;
                 }
                 if (prev % 5 === 0 && prev !== 30) {
-                    setSpeed(prev => prev * 1.25);
+                    setSpeed(prev => prev * 1.30);
                 }
                 return prev - 1;
             });
