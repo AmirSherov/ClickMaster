@@ -1,6 +1,6 @@
 'use client';
 import Nav from '../nav';
-import './accaunt.scss';
+import style from  './accaunt.module.scss';
 import Modal from '../Modal';
 import { useState, useEffect } from 'react';
 import { useGlobalContext } from '../GlobalState';
@@ -52,30 +52,30 @@ export default function Account() {
     }
     const currentCount = state.count;
     return (
-        <div className="account-container">
+        <div className={style.accauntContainer}>
             <h1>Account Information</h1>
-            <div className="user-details">
-                <div className="item">
+            <div className={style.userDetails}>
+                <div className={  style.userItem}>
                     <p>Username:</p>
                     <p>{state.userName}</p>
                 </div>
-                <div className="item">
+                <div className={style.userItem}>
                     <p>Email:</p>
                     <p>{maskEmail(state.email)}</p>
                 </div>
-                <div className="item">
+                <div className={ style.userItem}>
                     <p>Balance:</p>
                     <p>{formatNumber(state.count)}</p>
                 </div>
-                <div className="item">
+                <div className={ style.userItem }>
                     <p>Registration Date:</p>
                     <p>{state.date}</p>
                 </div>
             </div>
-            <div className="setting">
+            <div className={style.setting}>
                 <h1>Settings</h1>
-                <div className="setting-items">
-                    <div className="item">
+                <div className={style.settingItems}>
+                    <div className={style.settingItem}>
                         <div>Vibration</div>
                         <input
                             type="checkbox"
@@ -87,27 +87,27 @@ export default function Account() {
                                 UpdateUserField(state.id, 'vibration', newVibrationState);
                             }}
                         />
-                        <div><div className='slider-setting'></div></div>
+                        <div><div className={style.sliderSetting}></div></div>
                     </div>
                 </div>
             </div>
-            <button onClick={() => setIsOpen(true)} className='logout'>Logout</button>
+            <button onClick={() => setIsOpen(true)} className={style.logout}>Logout</button>
             <Nav />
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} onConfirm={() => logout()} text="Are you sure you want to log out?" />
-            <div className="achives-container">
+            <div className={style.achivesContainer}>
                 <h1>Account Achives</h1>
-                <div className="achives-items">
+                <div className={style.achivesItems}>
                     {Object.entries(Achives).map(([key, value]) => {
                         const isAchieved = currentCount >= value;
                         const progressPercentage = (currentCount / value) * 100;
 
                         return (
-                            <div key={value} className="item-achive">
+                            <div key={value} className={style.itemAchive}>
                                 <p>{key}</p>
-                                <div className="progress-bar-achive">
-                                    <div className="progress-achive" style={{ width: `${isAchieved ? 100 : progressPercentage}%` }}></div>
+                                <div className={style.progressBarAchive}>
+                                    <div className={style.progressAchive} style={{ width: `${isAchieved ? 100 : progressPercentage}%` }}></div>
                                 </div>
-                                {isAchieved && <span className="checkmark-achive">< IoCheckmark /></span>}
+                                {isAchieved && <span className={style.checkmarkAchive}>< IoCheckmark /></span>}
                             </div>
                         );
                     })}

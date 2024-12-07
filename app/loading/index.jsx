@@ -1,13 +1,13 @@
-import "./loading.scss";
+import style from "./loading.module.scss";
 
 export default function Loading() {
   return (
-    <div className="loading-container">
-      <div className="loading-animation">
-        <div className="ring"></div>
-        <div className="ring"></div>
-        <div className="ring"></div>
-        <span className="loading-text">Loading...</span>
+    <div className={style["loading-container"]}>
+      <div className={style["loading-animation"]}>
+        <div className={style["ring"]}></div>
+        <div className={style["ring"]}></div>
+        <div className={style["ring"]}></div>
+        <span className={style["loading-text"]}>Loading...</span>
       </div>
     </div>
   );

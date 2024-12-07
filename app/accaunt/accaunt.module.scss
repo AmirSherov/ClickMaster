@@ -1,0 +1,162 @@
+.accauntContainer {
+    padding: 20px;
+    padding-bottom: 100px;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #000, #222);
+    color: #fff;
+
+    h1 {
+        margin: 20px 0;
+        font-size: 24px;
+        text-align: center;
+    }
+}
+
+.userDetails {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.userItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    p {
+        margin: 0;
+        font-size: 16px;
+
+        &:first-child {
+            color: #888;
+        }
+    }
+}
+
+.setting {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.settingItems {
+    padding: 10px;
+}
+
+.settingItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    
+    input[type="checkbox"] {
+        transform: translateX(82px);
+        z-index: 900;
+        opacity: 0;
+        width: 100px;
+        height: 40px;
+    }
+
+    .sliderSetting {
+        width: 50px;
+        height: 26px;
+        background-color: #333;
+        border-radius: 13px;
+        position: relative;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #fff;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.3s;
+        }
+    }
+
+    input[type="checkbox"]:checked + div .sliderSetting {
+        background-color: #00ff08;
+
+        &::after {
+            transform: translateX(24px);
+        }
+    }
+}
+
+.logout {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin: 20px 0;
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #ff0000;
+    }
+}
+
+.achivesContainer {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.achivesItems {
+    display: grid;
+    gap: 15px;
+}
+
+.itemAchive {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 10px;
+    position: relative;
+
+    p {
+        margin: 0 0 10px 0;
+        font-size: 16px;
+    }
+}
+
+.progressBarAchive {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progressAchive {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #45a049);
+    transition: width 0.3s ease;
+}
+
+.checkmarkAchive {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #4CAF50;
+    font-size: 24px;
+}

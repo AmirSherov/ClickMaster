@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
-import './nav.scss';
+import  style  from './nav.module.scss';
 
 const NAV_ITEMS = [
   { path: '/', label: 'Menu' },
@@ -14,7 +14,7 @@ const NAV_ITEMS = [
 const NavItem = ({ path, label, isActive }) => (
   <Link
     href={path}
-    className={`nav-item ${isActive ? 'active' : ''}`}
+    className={`${style.navItem} ${isActive ? style.activeNavigation : ''}`}
     prefetch={true}
   >
     {label}
@@ -33,7 +33,7 @@ export default function Nav() {
     );
 
     return (
-        <nav className="bottom-navigation">
+        <nav className={style.bottomNavigation}>
             {navItems.map(({ path, label, isActive }) => (
                 <NavItem
                     key={path}

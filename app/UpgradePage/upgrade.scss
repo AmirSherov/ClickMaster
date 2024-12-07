@@ -7,15 +7,15 @@
     user-select: none;
 }
 body{
-    padding-bottom: 50px;
+    margin-bottom: 50px;
+    height: auto;
 }
 .upgrade-page-container {
-    min-height: 100vh;
+    min-height: 100%;
     background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
     color: #fff;
     padding: 40px 20px;
     text-align: center;
-
     .upgrade-page-title {
         font-size: 2.5rem;
         font-weight: bold;

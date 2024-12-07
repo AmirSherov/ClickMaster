@@ -1,4 +1,4 @@
-.bottom-navigation {
+.bottomNavigation {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -21,13 +21,13 @@
         backdrop-filter: blur(10px);
     }
 
-    .active {
+    .activeNavigation {
         color: #ffffff;
         background-color: rgba(255, 255, 255, 0.15);
         font-weight: 600;
     }    
 
-    .nav-item {
+    .navItem {
         color: #e6e6e6;
         font-size: 1rem;
         text-transform: uppercase;

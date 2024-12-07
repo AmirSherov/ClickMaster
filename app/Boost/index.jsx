@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useGlobalContext } from '../GlobalState';
-import './boost.scss';
+import styles from './boost.module.scss';
 
 const BOOST_DURATION = 15; 
 
@@ -55,15 +55,17 @@ export default function Boost() {
     const progress = (timeLeft / BOOST_DURATION) * 100;
 
     return (
-        <div className={`boost-container ${isWarning ? 'warning' : ''}`}>
-            <div className="boost-timer">
-                <span className="boost-multiplier">x{state.multiply}</span>
-                <span className="boost-time">{timeLeft}с</span>
+       <div className={`${styles.boostContainer} ${isWarning ? styles.warningActive : ''}`}>
+            <div className={styles.boostTimer}>
+                <span className={styles.boostMultiplier}>x{state.multiply}</span>
+                <span className={styles.boostTime}>{timeLeft}s</span>
             </div>
-            <div className="boost-progress-container">
-                <div 
-                    className="boost-progress-bar"
-                    style={{ width: `${progress}%` }}
+            <div className={styles.boostProgressContainer}>
+                <div
+                    className={styles.boostProgressBar}
+                    style={{
+                        width: `${progress}%`
+                    }}
                 />
             </div>
         </div>
