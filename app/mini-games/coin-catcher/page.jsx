@@ -5,6 +5,7 @@ import './catcher.scss';
 import { incrementCount } from '@/app/api';
 import { useGlobalContext } from '@/app/GlobalState';
 import { toast, Toaster } from 'react-hot-toast';
+import { IoIosArrowBack } from "react-icons/io";
 export default function CoinCatcher() {
     const [gameState, setGameState] = useState('ready');
     const [score, setScore] = useState(0);
@@ -118,6 +119,7 @@ export default function CoinCatcher() {
                 }}
             />
             <div className="game-header">
+            <div onClick={() => router.push('/mini-games')} style={{color: '#fff', fontSize: '30px'}} className="rank"><IoIosArrowBack /></div>
                 <div className="score">Score: {score} <img width={30} style={{ transform: 'translateY(3px)' }} height={30} src={"/coin.png"} alt="" /></div>
                 <div className="timer">Time: {timeLeft}s</div>
             </div>
