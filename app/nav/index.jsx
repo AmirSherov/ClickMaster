@@ -7,7 +7,8 @@ import './nav.scss';
 const NAV_ITEMS = [
   { path: '/', label: 'Menu' },
   { path: '/accaunt', label: 'Account' },
-  { path: '/rating', label: 'Rating' }
+  { path: '/rating', label: 'Rating' },
+  { path: '/mini-games', label: 'Games' }, 
 ];
 
 const NavItem = ({ path, label, isActive }) => (
