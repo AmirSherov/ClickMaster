@@ -35,6 +35,8 @@ export default function CoinCatcher() {
     };
 
     const collectCoin = (coinId, event) => {
+        audio.current.pause();
+        audio.current.currentTime = 0;
         audio.current.play();
         const coin = event.target;
         const rect = coin.getBoundingClientRect();
