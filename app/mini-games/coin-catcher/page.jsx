@@ -15,7 +15,7 @@ export default function CoinCatcher() {
     const gameAreaRef = useRef(null);
     const { state, dispatch } = useGlobalContext();
     const router = useRouter();
-
+    const audio = useRef(null);
     const startGame = () => {
         setGameState('playing');
         setScore(0);
@@ -35,6 +35,7 @@ export default function CoinCatcher() {
     };
 
     const collectCoin = (coinId, event) => {
+        audio.current.play();
         const coin = event.target;
         const rect = coin.getBoundingClientRect();
         const clickX = event.clientX;
@@ -118,6 +119,7 @@ export default function CoinCatcher() {
                     },
                 }}
             />
+            <audio ref={audio} src="/coin.wav" preload="auto"></audio>
             <div className="game-header">
             <div onClick={() => router.push('/mini-games')} style={{color: '#fff', fontSize: '30px'}} className="rank"><IoIosArrowBack /></div>
                 <div className="score">Score: {score} <img width={30} style={{ transform: 'translateY(3px)' }} height={30} src={"/coin.png"} alt="" /></div>
