@@ -1,4 +1,3 @@
-
 'use client';
 import './clicker.scss';
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
@@ -8,8 +7,8 @@ import ProgressBar from '../progressbar';
 import dynamic from 'next/dynamic';
 import { GiUpgrade } from "react-icons/gi";
 import { useRouter } from 'next/navigation';
-const DEBOUNCE_DELAY = 400;
 
+const DEBOUNCE_DELAY = 400;
 
 const RANKS = [
     { name: "Новичок", threshold: 0 },
@@ -27,6 +26,7 @@ const Clicker = () => {
     const { state, dispatch } = useGlobalContext();
     const [tapCount, setTapCount] = useState(0);
     const [userToken, setUserToken] = useState(null);
+    const [floatingNumbers, setFloatingNumbers] = useState([]);
     const timeoutRef = useRef(null);
     const [isVibration] = useState(state.vibration);
     const router = useRouter();
@@ -48,7 +48,6 @@ const Clicker = () => {
         return (number) => formatter.format(number);
     }, []);
 
-
     const syncWithServer = useCallback(async (count) => {
         if (!userToken || count === 0) return;
 
@@ -69,7 +68,23 @@ const Clicker = () => {
         const clickMultiplier = state.multiply || 1;
         const clickPower = state.click || 1;
         const totalClickValue = clickPower * clickMultiplier;
+                const rect = event.currentTarget.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
         
+        const newFloatingNumber = {
+            id: Date.now(),
+            x,
+            y,
+            value: totalClickValue
+        };
+        
+        setFloatingNumbers(prev => [...prev, newFloatingNumber]);
+        
+        setTimeout(() => {
+            setFloatingNumbers(prev => prev.filter(num => num.id !== newFloatingNumber.id));
+        }, 1000);
+
         if (isVibration) {
             navigator.vibrate(100);
         }
@@ -123,8 +138,8 @@ const Clicker = () => {
         return {
             currentRank,
             nextRank,
-            progress: count, 
-            total: nextRank.threshold  
+            progress: count,
+            total: nextRank.threshold
         };
     }, [displayCount]);
 
@@ -133,29 +148,48 @@ const Clicker = () => {
             <h1 className='clicker-title'>Click Master</h1>
             <p className="counter-display">{formatNumber(displayCount)}</p>
             <p className="rank-display">Ранг: {getCurrentRankInfo.currentRank.name}</p>
-            <button
-                role="button"
-                className={`button-92 ${state.multiply > 1 ? 'fire-effect' : ''}`}
-                onPointerDown={handleTap}
-            >
-                Tap
-                {state.multiply > 1 && (
-                    <div className="fire-particles">
-                        {[...Array(12)].map((_, i) => (
-                            <div key={i} className="particle" />
-                        ))}
+            <div className="button-container" style={{ position: 'relative' }}>
+                <button
+                    role="button"
+                    className={`button-92 ${state.multiply > 1 ? 'fire-effect' : ''}`}
+                    onPointerDown={handleTap}
+                >
+                    Tap
+                    {state.multiply > 1 && (
+                        <div className="fire-particles">
+                            {[...Array(12)].map((_, i) => (
+                                <div key={i} className="particle" />
+                            ))}
+                        </div>
+                    )}
+                </button>
+                {floatingNumbers.map(number => (
+                    <div
+                        key={number.id}
+                        className="floating-number"
+                        style={{
+                            left: `${number.x}px`,
+                            top: `${number.y}px`,
+                            position: 'absolute',
+                            pointerEvents: 'none'
+                        }}
+                    >
+                        +{number.value}
                     </div>
-                )}
-            </button>
-            <ProgressBar 
-                value={getCurrentRankInfo.progress} 
-                max={getCurrentRankInfo.total} 
-                rankName={getCurrentRankInfo.nextRank.name}
+                ))}
+            </div>
+            <ProgressBar
+                value={getCurrentRankInfo.progress}
+                maxValue={getCurrentRankInfo.total}
+                currentRank={getCurrentRankInfo.currentRank.name}
+                nextRank={getCurrentRankInfo.nextRank.name}
             />
-                    <button className="upgrade-button" onClick={() => router.push('/UpgradePage')}><GiUpgrade className="upgrade-icon" /><span>Upgrade</span></button>
-
+            <button className="upgrade-button" onClick={() => router.push('/UpgradePage')}>
+                <GiUpgrade className="upgrade-icon" />
+                <span>Upgrade</span>
+            </button>
         </div>
     );
-}
+};
 
 export default dynamic(() => Promise.resolve(Clicker), { ssr: false });

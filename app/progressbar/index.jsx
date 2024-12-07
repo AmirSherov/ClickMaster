@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 import './progressbar.scss';
 
-const ProgressBar = React.memo(({ value = 0, max = 100, rankName = '' }) => {
+const ProgressBar = React.memo(({ value = 0, maxValue = 100, currentRank = '', nextRank = '' }) => {
   const { progress, percentage } = useMemo(() => {
-    const validValue = Math.min(Math.max(value, 0), max);
+    const validValue = Math.min(Math.max(value, 0), maxValue);
     return {
       progress: validValue,
-      percentage: (validValue / max) * 100
+      percentage: (validValue / maxValue) * 100
     };
-  }, [value, max]);
+  }, [value, maxValue]);
 
   const formatNumber = useMemo(() => {
     return new Intl.NumberFormat('ru-RU').format;
@@ -17,7 +17,7 @@ const ProgressBar = React.memo(({ value = 0, max = 100, rankName = '' }) => {
   return (
     <div className="progress-bar-container">
       <div className="progress-bar-header">
-        <span>До ранга: {rankName}</span>
+        <span>До ранга: {nextRank}</span>
       </div>
       <div
         className="progress-bar-fill"
@@ -27,7 +27,7 @@ const ProgressBar = React.memo(({ value = 0, max = 100, rankName = '' }) => {
         }}
       ></div>
       <span className="progress-bar-label">
-        {`${formatNumber(progress)} / ${formatNumber(max)}`}
+        {`${formatNumber(progress)} / ${formatNumber(maxValue)}`}
       </span>
     </div>
   );

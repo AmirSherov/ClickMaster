@@ -23,7 +23,7 @@ export default function UpgradePage() {
             id: 1,
             name: "Двойной клик",
             multiplier: 1,
-            cost: 1000,
+            cost: 2000,
             type: "+",
             priceType: "dynamic",
             icon: <FaHandPointer className="card-icon" />,
@@ -77,7 +77,6 @@ export default function UpgradePage() {
                     dispatch({ type: 'UPDATE_COUNT', payload: newPoints });
                     dispatch({ type: 'SET_MULTIPLY', payload: upgrade.multiplier });
                     setUserPoints(newPoints);
-                    setIsLoading(false);
                     setTimeout(() => {
                         router.push('/');
                     },300)
@@ -85,6 +84,8 @@ export default function UpgradePage() {
             }
         } catch (error) {
             console.error('Ошибка при обновлении:', error);
+        } finally{
+            setIsLoading(false);
         }
     };
 
