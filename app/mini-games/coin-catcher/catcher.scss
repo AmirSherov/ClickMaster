@@ -37,7 +37,7 @@
       }
     }
   
-    .start-button, .claim-button {
+    .start-button {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -59,7 +59,19 @@
         box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
       }
     }
-  
+   .claim-button{
+    padding: 20px 60px;
+    font-size: 28px;
+    border: none;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    font-weight: bold;  
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    background: linear-gradient(45deg, #ffd700, #ffb700);
+    border-radius: 15px;
+    font-weight: bold;
+    color: black;
+   } 
     .game-over {
       position: absolute;
       top: 50%;

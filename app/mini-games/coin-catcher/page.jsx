@@ -4,8 +4,9 @@ import { useRouter } from 'next/navigation';
 import './catcher.scss';
 import { incrementCount } from '@/app/api';
 import { useGlobalContext } from '@/app/GlobalState';
+import { toast, Toaster } from 'react-hot-toast';
 export default function CoinCatcher() {
-  const [gameState, setGameState] = useState('ready'); // ready, playing, finished
+  const [gameState, setGameState] = useState('ready'); 
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);
   const [coins, setCoins] = useState([]);
@@ -40,7 +41,10 @@ export default function CoinCatcher() {
   const claimRewards = () => {
     dispatch({ type: 'UPDATE_COUNT', payload: state.count + score });
     incrementCount(state.id, state.count + score);
-    router.push('/mini-games');
+    toast.success('Rewards claimed successfully!');
+    setTimeout(() => {
+        router.push('/mini-games');
+    }, 1100);
   };
 
   useEffect(() => {
@@ -65,7 +69,7 @@ export default function CoinCatcher() {
           return 0;
         }
         if (prev % 5 === 0 && prev !== 30) {
-          setSpeed(prev => prev * 1.1);
+          setSpeed(prev => prev * 1.25);
         }
         return prev - 1;
       });
@@ -80,6 +84,24 @@ export default function CoinCatcher() {
 
   return (
     <div className="coin-catcher">
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        gutter={8}
+        containerClassName=""
+        containerStyle={{}}
+        toastOptions={{
+          duration: 2000,
+          style: {
+            background: '#333',
+            color: '#fff',
+            fontSize: '16px',
+            padding: '16px',
+            fontWeight: 'bold',
+            borderRadius: '8px',    
+          },
+        }} 
+      />
       <div className="game-header">
         <div className="score">Score: {score}</div>
         <div className="timer">Time: {timeLeft}s</div>
