@@ -175,4 +175,42 @@
   border-radius: 8px;
   word-break: break-all;
   text-align: center;
+}
+
+.wallet-choice {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.wallet-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+
+  &:hover {
+    background: #2d3a4f;
+    transform: translateY(-2px);
+  }
+
+  img {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+
+  span {
+    color: #f8fafc;
+    font-size: 1rem;
+    font-weight: 500;
+  }
 } 

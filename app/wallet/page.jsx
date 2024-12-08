@@ -11,13 +11,19 @@ const AirdropPage = () => {
   const [walletAddress, setWalletAddress] = useState('');
 
   useEffect(() => {
-    // Проверяем доступность объекта window.Telegram
     if (typeof window !== 'undefined' && window.Telegram) {
       const webapp = window.Telegram.WebApp;
       if (webapp) {
         console.log('Telegram WebApp initialized:', webapp);
         webapp.ready();
         setTg(webapp);
+        window.Telegram.WebApp.onEvent('walletConnect', (data) => {
+          if (data.address) {
+            setWalletAddress(data.address);
+            setIsConnected(true);
+            setError('');
+          }
+        });
       } else {
         console.error('Telegram WebApp not found');
       }
@@ -31,19 +37,7 @@ const AirdropPage = () => {
       if (!tg) {
         throw new Error('Откройте приложение в Telegram');
       }
-
-      console.log('Connecting wallet...');
-      
-      // Отправляем данные в бота
-      tg.sendData(JSON.stringify({
-        action: 'connect_wallet'
-      }));
-
-      // Имитируем получение адреса (в реальности придет от бота)
-      const address = '0x742d35Cc6634C0532925a3b844Bc454e4438f44e';
-      setWalletAddress(address);
-      setIsConnected(true);
-      setError('');
+      tg.openTelegramWalletSelection();
 
     } catch (err) {
       setError(err.message || 'Ошибка подключения кошелька');
@@ -86,7 +80,7 @@ const AirdropPage = () => {
   const WalletInfo = () => (
     isConnected && (
       <div className="wallet-info">
-        <span className="wallet-label">Кошелек</span>
+        <span className="wallet-label">Подключенный кошелек</span>
         <span className="wallet-address">{walletAddress}</span>
       </div>
     )
