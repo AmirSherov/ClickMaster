@@ -7,15 +7,28 @@
     user-select: none;
 }
 
+:root {
+    --clicker-bg: #0f172a;
+    --clicker-text: #f8fafc;
+    --clicker-secondary: #94a3b8;
+    --clicker-accent: #3b82f6;
+    --clicker-item-bg: #1e293b;
+    --clicker-item-border: #334155;
+    --clicker-active-bg: #2563eb;
+    --clicker-header-bg: #1e293b;
+    --clicker-success: #22c55e;
+    --clicker-warning: #eab308;
+}
+
 html, body {
     min-height: 100vh;
     width: 100%;
 }
 
 body {
-    color: #f5f5f5; 
+    color: var(--clicker-text);
     line-height: 1.6;
-    background: linear-gradient(180deg, rgba(59, 130, 246, 0.1), transparent);  
+    background: var(--clicker-bg);
     position: relative;
 }
 
