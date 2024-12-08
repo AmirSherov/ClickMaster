@@ -11,16 +11,18 @@ const AirdropPage = () => {
   const [walletAddress, setWalletAddress] = useState('');
 
   useEffect(() => {
-    try {
-      // Инициализируем Telegram WebApp
-      const webapp = window.Telegram?.WebApp;
+    // Проверяем доступность объекта window.Telegram
+    if (typeof window !== 'undefined' && window.Telegram) {
+      const webapp = window.Telegram.WebApp;
       if (webapp) {
+        console.log('Telegram WebApp initialized:', webapp);
         webapp.ready();
-        webapp.expand();
         setTg(webapp);
+      } else {
+        console.error('Telegram WebApp not found');
       }
-    } catch (err) {
-      console.error('Ошибка инициализации Telegram WebApp:', err);
+    } else {
+      console.error('Telegram object not found');
     }
   }, []);
 
@@ -30,32 +32,22 @@ const AirdropPage = () => {
         throw new Error('Откройте приложение в Telegram');
       }
 
-      // Показываем попап подтверждения
-      tg.showPopup({
-        title: 'Подключение кошелька',
-        message: 'Подтвердите подключение кошелька',
-        buttons: [
-          { text: 'Подключить', type: 'ok' },
-          { text: 'Отмена', type: 'cancel' }
-        ]
-      }, (buttonId) => {
-        if (buttonId === 'ok') {
-          // После подтверждения отправляем запрос боту
-          tg.sendData(JSON.stringify({
-            action: 'connect_wallet'
-          }));
-          
-          // В реальном приложении здесь нужно дождаться ответа от бота
-          // с адресом кошелька, а пока используем тестовый адрес
-          const address = '0x742d35Cc6634C0532925a3b844Bc454e4438f44e';
-          setWalletAddress(address);
-          setIsConnected(true);
-          setError('');
-        }
-      });
+      console.log('Connecting wallet...');
+      
+      // Отправляем данные в бота
+      tg.sendData(JSON.stringify({
+        action: 'connect_wallet'
+      }));
+
+      // Имитируем получение адреса (в реальности придет от бота)
+      const address = '0x742d35Cc6634C0532925a3b844Bc454e4438f44e';
+      setWalletAddress(address);
+      setIsConnected(true);
+      setError('');
+
     } catch (err) {
       setError(err.message || 'Ошибка подключения кошелька');
-      console.error('Ошибка:', err);
+      console.error('Connection error:', err);
     }
   };
 
