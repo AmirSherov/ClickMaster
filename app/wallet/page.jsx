@@ -17,13 +17,12 @@ const AirdropPage = () => {
         console.log('Telegram WebApp initialized:', webapp);
         webapp.ready();
         setTg(webapp);
-        window.Telegram.WebApp.onEvent('walletConnect', (data) => {
-          if (data.address) {
-            setWalletAddress(data.address);
-            setIsConnected(true);
-            setError('');
-          }
-        });
+
+        // Проверяем, есть ли уже подключенный кошелек
+        if (webapp.initDataUnsafe?.user?.wallet_connected) {
+          setWalletAddress(webapp.initDataUnsafe.user.wallet_address);
+          setIsConnected(true);
+        }
       } else {
         console.error('Telegram WebApp not found');
       }
@@ -37,7 +36,14 @@ const AirdropPage = () => {
       if (!tg) {
         throw new Error('Откройте приложение в Telegram');
       }
-      tg.openTelegramWalletSelection();
+
+      // Отправляем команду боту для подключения кошелька
+      tg.sendData(JSON.stringify({
+        action: 'connect_wallet'
+      }));
+
+      // В реальном приложении адрес придет от бота после подключения
+      // Здесь мы должны дождаться ответа от бота с адресом кошелька
 
     } catch (err) {
       setError(err.message || 'Ошибка подключения кошелька');
