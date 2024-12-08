@@ -4,7 +4,8 @@
     left: 0;
     right: 0;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    gap: 6px;
     align-items: center;
     background: var(--clicker-item-bg);
     padding: 12px env(safe-area-inset-bottom) calc(12px + env(safe-area-inset-bottom)) env(safe-area-inset-bottom);
@@ -15,7 +16,6 @@
     will-change: transform;
     touch-action: manipulation;
     -webkit-overflow-scrolling: touch;
-
     @supports (backdrop-filter: blur(10px)) {
         background: rgba(30, 41, 59, 0.8);
         backdrop-filter: blur(10px);
@@ -61,11 +61,11 @@
 
     .navItem {
         color: var(--clicker-secondary);
-        font-size: 0.95rem;
+        font-size: 0.80rem;
         text-transform: uppercase;
         font-weight: 500;
         text-decoration: none;
-        padding: 10px 16px;
+        padding: 10px 12px;
         border-radius: 12px;
         cursor: pointer;
         user-select: none;
@@ -77,7 +77,6 @@
         background: var(--clicker-header-bg);
         position: relative;
         overflow: hidden;
-
         &::before {
             content: '';
             position: absolute;

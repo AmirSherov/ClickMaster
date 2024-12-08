@@ -7,6 +7,7 @@ import  style  from './nav.module.scss';
 const NAV_ITEMS = [
   { path: '/', label: 'Menu' },
   { path: '/boosters', label: 'Boosters' },
+  { path: '/wallet', label: 'Airdrop' },
   { path: '/rating', label: 'Rating' },
   { path: '/mini-games', label: 'Games' },
 ];
