@@ -24,7 +24,7 @@ body{
     align-items: center;
     justify-content: center;
     background: var(--clicker-bg);
-    padding: 20px 20px 90px 20px;
+    padding: 10px 10px 90px 10px;
     overflow: hidden;
 
     .clicker-title {
@@ -36,7 +36,7 @@ body{
     }
 
     .counter-display {
-        font-size: 3rem;
+        font-size: 2.5rem;
         font-weight: bold;
         color: var(--clicker-text);
         text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
@@ -54,7 +54,7 @@ body{
 .button-container {
     position: relative;
     display: inline-block;
-    margin: 20px 0;
+    margin-bottom: 10px;
 }
 
 .button-92 {

@@ -1,9 +1,9 @@
 .boosters-page {
     min-height: 100vh;
-    background: #1a1a1a;
-    color: #fff;
+    background: var(--clicker-bg);
+    color: var(--clicker-text);
     display: flex;
-    padding-top: 50px;
+    padding-top: 70px;
     flex-direction: column;
 
     .tab-switcher {
@@ -12,34 +12,93 @@
         width: 100%;
         z-index: 100;
         display: flex;
-        justify-content: space-between;
-        gap: 5px;
-        padding: 10px;
-        background: #1a1a1a;
-        border-bottom: 1px solid #333;
+        justify-content: center;
+        gap: 10px;
+        padding: 15px;
+        background: var(--clicker-item-bg);
+        border-bottom: 1px solid var(--clicker-item-border);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+        @supports (backdrop-filter: blur(10px)) {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+        }
 
         button {
             padding: 10px 20px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 1em;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
-            background: #2a2a2a;
-            color: #888;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--clicker-header-bg);
+            color: var(--clicker-secondary);
+            border: 1px solid var(--clicker-item-border);
+            min-width: 120px;
+            position: relative;
+            overflow: hidden;
 
-            &:hover {
-                background: #333;
-                color: #fff;
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(59, 130, 246, 0.1),
+                    transparent
+                );
+                transition: 0.5s;
+            }
+
+            &:hover:not(.active) {
+                color: var(--clicker-text);
+                transform: translateY(-2px);
+                border-color: var(--clicker-accent);
+                
+                &::before {
+                    left: 100%;
+                }
             }
 
             &.active {
-                background: #4a90e2;
-                color: white;
+                background: linear-gradient(135deg, var(--clicker-accent), var(--clicker-active-bg));
+                color: var(--clicker-text);
+                border: none;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px -2px rgba(59, 130, 246, 0.3);
+                position: relative;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: -2px;
+                    left: -2px;
+                    right: -2px;
+                    bottom: -2px;
+                    background: linear-gradient(135deg, var(--clicker-accent), var(--clicker-active-bg));
+                    z-index: -2;
+                    border-radius: 14px;
+                    animation: borderGlow 2s ease-in-out infinite;
+                }
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    inset: 0;
+                    background: linear-gradient(135deg, var(--clicker-accent), var(--clicker-active-bg));
+                    z-index: -1;
+                    border-radius: 12px;
+                }
 
                 &:hover {
-                    background: #357abd;
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 15px -3px rgba(59, 130, 246, 0.4);
                 }
             }
         }
@@ -49,9 +108,19 @@
         flex: 1;
         display: flex;
         flex-direction: column;
+        padding: 0 20px;
 
         > div {
             flex: 1;
         }
     }
-} 
+}
+
+@keyframes borderGlow {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
