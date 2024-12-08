@@ -3,16 +3,14 @@
 import { useState, useEffect } from 'react';
 import {
     getAvailableBoosters,
-    getUserBoosters,
-    toggleBoosterEquip,
+    buyBooster,
 } from '../api';
 import { useGlobalContext } from '../GlobalState';
-import './inventory.scss';
+import './shop.scss';
 import { toast, Toaster } from 'react-hot-toast';
-import Nav from '../nav'
-export default function InventoryPage() {
+import Nav from '../nav';
+export default function ShopPage() {
     const [allBoosters, setAllBoosters] = useState([]);
-    const [userBoosters, setUserBoosters] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
@@ -23,10 +21,7 @@ export default function InventoryPage() {
 
     useEffect(() => {
         loadAllBoosters();
-        if (userId) {
-            loadUserBoosters();
-        }
-    }, [userId]);
+    }, []);
 
     const loadAllBoosters = async () => {
         try {
@@ -34,33 +29,15 @@ export default function InventoryPage() {
             setAllBoosters(data);
         } catch (err) {
             setError(err.message);
-        }
-    };
-
-    const loadUserBoosters = async () => {
-        if (!userId) {
-            return;
-        }
-
-        try {
-            const boosters = await getUserBoosters(userId);
-            setUserBoosters(boosters);
-        } catch (err) {
-            setError(err.message);
         } finally {
             setLoading(false);
         }
     };
 
-    const handleEquip = async (boosterId, type) => {
+    const handleBuy = async (boosterId) => {
         try {
-            await toggleBoosterEquip(userId, boosterId);
-            loadUserBoosters();
-            if (type == 'true') {
-                toast.success("Успешно применен");
-            } else {
-                toast.success("Успешно снят");
-            }
+            await buyBooster(userId, boosterId);
+            toast.success('Усилитель усп��шно куплен!');
         } catch (err) {
             alert(err.message);
         }
@@ -76,10 +53,6 @@ export default function InventoryPage() {
     };
 
     const filteredBoosters = allBoosters.filter(booster => {
-        if (!(booster.id in userBoosters)) {
-            return false;
-        }
-
         if (!booster) return false;
 
         const matchesSearch = searchQuery ? (
@@ -98,7 +71,7 @@ export default function InventoryPage() {
 
     if (loading) {
         return (
-            <div className="inventory-page">
+            <div className="shop-page">
                 <div className="loading">
                     <div className="spinner"></div>
                 </div>
@@ -107,7 +80,7 @@ export default function InventoryPage() {
     }
 
     return (
-        <div className="inventory-page">
+        <div className="shop-page">
             <Toaster
                 position="top-center"
                 reverseOrder={false}
@@ -127,9 +100,9 @@ export default function InventoryPage() {
                 }}
             />
             <div className="container">
-                <div className="inventory-header">
-                    <h1>Инвентарь усилителей</h1>
-                    <p>Управляйте вашими усилителями</p>
+                <div className="shop-header">
+                    <h1>Магазин усилителей</h1>
+                    <p>Покупайте новые усилители для вашего кликера</p>
                 </div>
 
                 <div className="filters">
@@ -171,9 +144,6 @@ export default function InventoryPage() {
                                         booster.effect?.type === 'multiply' ? 'Множитель' :
                                             booster.effect?.type || 'Неизвестный тип'}
                                 </span>
-                                {userBoosters[booster.id] && (
-                                    <span className="equipped-badge">Экипирован</span>
-                                )}
                             </div>
 
                             <div className="content">
@@ -195,11 +165,12 @@ export default function InventoryPage() {
                                 </p>
 
                                 <div className="footer">
+                                    <span className="price">{formatNumber(booster.basePrice) || 0} 🪙</span>
                                     <button
-                                        className={`equip-button ${userBoosters[booster.id] ? 'equipped' : ''}`}
-                                        onClick={() => handleEquip(booster.id, !userBoosters[booster.id])}
+                                        className="buy-button"
+                                        onClick={() => handleBuy(booster.id)}
                                     >
-                                        {userBoosters[booster.id] ? 'Снять' : 'Применить'}
+                                        Купить
                                     </button>
                                 </div>
                             </div>

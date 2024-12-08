@@ -375,16 +375,6 @@ const Clicker = () => {
                 currentRank={getCurrentRankInfo.currentRank.name}
                 nextRank={getCurrentRankInfo.nextRank.name}
             />
-            <div className="boosts-buttons">
-                <button className="upgrade-button" onClick={() => router.push('/UpgradePage')}>
-                    <GiUpgrade className="upgrade-icon" />
-                    <span>Upgrade</span>
-                </button>
-                <button className="upgrade-button" onClick={() => router.push('/inventory')}>
-                    <BsBackpack2Fill className="upgrade-icon" />
-                    <span>Inventory</span>
-                </button>
-            </div>
         </div>
     );
 };
