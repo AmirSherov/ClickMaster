@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import './wallet.scss';
 import Nav from "../nav"
+
 const AirdropPage = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [tg, setTg] = useState(null);
@@ -10,30 +11,48 @@ const AirdropPage = () => {
   const [walletAddress, setWalletAddress] = useState('');
 
   useEffect(() => {
-    if (window.Telegram?.WebApp) {
-      setTg(window.Telegram.WebApp);
+    try {
+      // Инициализируем Telegram WebApp
+      const webapp = window.Telegram?.WebApp;
+      if (webapp) {
+        webapp.ready();
+        webapp.expand();
+        setTg(webapp);
+      }
+    } catch (err) {
+      console.error('Ошибка инициализации Telegram WebApp:', err);
     }
   }, []);
 
   const handleConnect = async () => {
     try {
       if (!tg) {
-        throw new Error('Telegram Web App не доступен');
+        throw new Error('Откройте приложение в Telegram');
       }
 
-      const result = await tg.sendData(JSON.stringify({
-        action: 'connect_wallet'
-      }));
-
-      const address = '0x742d35Cc6634C0532925a3b844Bc454e4438f44e';
-      
-      if (address) {
-        setWalletAddress(address);
-        setIsConnected(true);
-        setError('');
-      } else {
-        throw new Error('Не удалось получить адрес кошелька');
-      }
+      // Показываем попап подтверждения
+      tg.showPopup({
+        title: 'Подключение кошелька',
+        message: 'Подтвердите подключение кошелька',
+        buttons: [
+          { text: 'Подключить', type: 'ok' },
+          { text: 'Отмена', type: 'cancel' }
+        ]
+      }, (buttonId) => {
+        if (buttonId === 'ok') {
+          // После подтверждения отправляем запрос боту
+          tg.sendData(JSON.stringify({
+            action: 'connect_wallet'
+          }));
+          
+          // В реальном приложении здесь нужно дождаться ответа от бота
+          // с адресом кошелька, а пока используем тестовый адрес
+          const address = '0x742d35Cc6634C0532925a3b844Bc454e4438f44e';
+          setWalletAddress(address);
+          setIsConnected(true);
+          setError('');
+        }
+      });
     } catch (err) {
       setError(err.message || 'Ошибка подключения кошелька');
       console.error('Ошибка:', err);
@@ -50,7 +69,7 @@ const AirdropPage = () => {
         className="wallet-button"
         disabled={!tg}
       >
-        {!tg ? 'Откройте в Telegram' : 'Подключить кошелек'}
+        {!tg ? 'Загрузка...' : 'Подключить кошелек'}
       </button>
       {error && <p className="wallet-error">{error}</p>}
     </div>
