@@ -14,34 +14,25 @@ body{
     height: 100%;
 }
 .clicker-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 24px;
-    min-height: 100vh;
-    padding: 20px;
-    position: relative;
-    text-align: center;
     background: var(--clicker-bg);
-    overflow-x: hidden;
-
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 300px;
-        background: linear-gradient(180deg, rgba(59, 130, 246, 0.1), transparent);
-        pointer-events: none;
-    }
+    padding: 20px 20px 90px 20px;
+    overflow: hidden;
 
     .clicker-title {
         color: var(--clicker-text);
         font-size: 35px;
         text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
         animation: glow 1.5s infinite alternate;
+        margin-bottom: 20px;
     }
 
     .counter-display {
@@ -57,18 +48,17 @@ body{
         color: var(--clicker-secondary);
         font-size: 1.2rem;
         margin-bottom: 20px;
-        z-index: 1;
     }
 }
 
 .button-container {
     position: relative;
     display: inline-block;
-    z-index: 1;
+    margin: 20px 0;
 }
 
 .button-92 {
-    width: 260px;
+    width: 250px;
     height: 250px;
     border-radius: 50%;
     background: linear-gradient(145deg, var(--clicker-item-bg), var(--clicker-bg));
@@ -79,7 +69,7 @@ body{
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    transition: all 0.1s ease;
+    transition: all 0.3s ease;
     box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
 
     &:hover {
@@ -88,7 +78,7 @@ body{
     }
 
     &:active {
-        transform: scale(0.98);
+        transform: scale(0.95);
     }
 
     &.fire-effect {
@@ -117,13 +107,12 @@ body{
     display: flex;
     justify-content: center;
     gap: 16px;
-    margin-bottom: 20px;
+    margin: 20px 0;
     padding: 16px;
     background: var(--clicker-item-bg);
     border-radius: 16px;
     border: 1px solid var(--clicker-item-border);
     backdrop-filter: blur(10px);
-    z-index: 1;
 }
 
 .boost-slot {
@@ -219,7 +208,6 @@ body{
     display: flex;
     gap: 20px;
     margin-top: 20px;
-    z-index: 1;
 
     button {
         padding: 12px 24px;
