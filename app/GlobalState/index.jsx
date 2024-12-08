@@ -18,7 +18,7 @@ function globalReducer(state, action) {
     case 'SET_USER_NAME':
       return { ...state, userName: action.payload };
     case 'UPDATE_COUNT':
-      return { ...state, count: action.payload};
+      return { ...state, count: action.payload };
     case 'SET_USER_COUNT':
       return { ...state, count: action.payload };
     case 'SET_USER_DATE':

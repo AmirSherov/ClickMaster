@@ -1,73 +1,4 @@
 
-// .progress-bar-container {
-//   width: 100%;
-//   max-width: 300px;
-//   margin: 20px auto;
-//   position: relative;
-//   background: rgba(255, 255, 255, 0.08);
-//   border-radius: 15px;
-//   overflow: hidden;
-//   padding: 4px;
-//   bottom: 20px;
-//   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-//   backdrop-filter: blur(5px);
-//   border: 1px solid rgba(255, 255, 255, 0.1);
-  
-//   .progress-bar-header {
-//     text-align: center;
-//     margin-bottom: 30px;
-//     font-size: 0.95em;
-//     color: #fff;
-//     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-//     font-weight: 500;
-//     letter-spacing: 0.5px;
-//   }
-
-//   .progress-bar-fill {
-//     height: 22px;
-//     background: linear-gradient(90deg, #00c6ff, #0072ff);
-//     border-radius: 12px;
-//     transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-//     box-shadow: 0 2px 8px rgba(0, 114, 255, 0.3);
-//     position: relative;
-//     overflow: hidden;
-
-//     &::after {
-//       content: '';
-//       position: absolute;
-//       top: 0;
-//       left: 0;
-//       right: 0;
-//       bottom: 0;
-//       background: linear-gradient(
-//         90deg,
-//         rgba(255, 255, 255, 0) 0%,
-//         rgba(255, 255, 255, 0.2) 50%,
-//         rgba(255, 255, 255, 0) 100%
-//       );
-//       transform: translateX(-100%);
-//       animation: shimmer 2s infinite;
-//     }
-//   }
-
-//   .progress-bar-label {
-//     position: absolute;
-//     top: 50%;
-//     left: 50%;
-//     transform: translate(-50%, -50%);
-//     color: #fff;
-//     font-size: 0.85em;
-//     font-weight: 600;
-//     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-//     white-space: nowrap;
-//   }
-// }
-
-// @keyframes shimmer {
-//   100% {
-//     transform: translateX(100%);
-//   }
-// }
 
 .progress-bar-container {
   width: 100%;
@@ -79,6 +10,7 @@
   overflow: hidden;
   padding: 5px;
   bottom: 20px;
+  height: 90px;
   box-shadow: 0 8px 32px rgba(2, 4, 24, 0.25);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.18);
